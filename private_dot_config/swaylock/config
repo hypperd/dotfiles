@@ -1,0 +1,28 @@
+daemonize
+screenshots
+#ignore-empty-password
+indicator
+
+font=JetBrains Mono Nerd Font
+
+effect-blur=7x5
+inside-color=2e3440
+inside-ver-color=2e3440
+inside-wrong-color=2e3440
+inside-clear-color=2e3440
+text-color=d8dee9
+text-ver-color=d8dee9
+text-wrong-color=d8dee9
+text-clear-color=d8dee9
+ring-color=3b4252
+ring-clear-color=ebcb8b
+ring-ver-color=5e81ac
+ring-wrong-color=d08770
+key-hl-color=a3be8c
+line-uses-inside
+separator-color=2e3440
+
+clock
+timestr=%H:%M 
+datestr=%a, %d/%m/%Y
+fade-in=0.2
