@@ -1,0 +1,8 @@
+profile home {
+    output "Samsung Electric Company SAMSUNG 0x00000000" enable position 0,0
+    output LVDS-1 enable position 1920,0
+}
+
+profile unplugged {
+    output LVDS-1 enable position 0,0
+}

@@ -1,0 +1,53 @@
+set window-title-basename "true"
+set selection-clipboard "clipboard"
+
+# Base16 Nord
+# Author: arcticicestudio
+
+set default-bg                  "#262B35"
+set default-fg                  "#3B4252"
+
+set statusbar-fg                "#D8DEE9"
+set statusbar-bg                "#434C5E"
+
+set inputbar-bg                 "#2E3440"
+set inputbar-fg                 "#8FBCBB"
+
+set notification-bg             "#2E3440"
+set notification-fg             "#8FBCBB"
+
+set notification-error-bg       "#2E3440"
+set notification-error-fg       "#BF616A"
+
+set notification-warning-bg     "#2E3440"
+set notification-warning-fg     "#BF616A"
+
+set highlight-color             "#EBCB8B"
+set highlight-active-color      "#81A1C1"
+
+set completion-bg               "#3B4252"
+set completion-fg               "#81A1C1"
+
+set completion-group-bg         "#2E3440"
+set completion-group-fg         "#81A1C1"
+
+set completion-highlight-fg     "#8FBCBB"
+set completion-highlight-bg     "#81A1C1"
+
+set render-loading		true
+set render-loading-fg 		"#2E3440"
+set render-loading-bg		"#3B4252"
+
+set index-bg                    "#2E3440" # Background
+set index-fg                    "#ECEFF4" # Foreground
+set index-active-bg             "#5E81AC" # Current Line
+set index-active-fg             "#ECEFF4" # Foreground
+
+set recolor-lightcolor          "#2E3440"
+set recolor-darkcolor           "#ECEFF4"
+
+set page-padding		15
+set font                        "JetBrains Mono Nerd Font 12"
+
+set adjust-open width
+set recolor true
