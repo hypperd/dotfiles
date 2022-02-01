@@ -1,0 +1,154 @@
+  * {
+    border: none;
+    font-family: JetBrains Mono Nerd Font;
+    font-weight: normal;
+    font-size: 13px;
+    min-height: 0px;
+  }
+  
+  window#waybar { 
+	  border-radius: 0px;
+	  background-color: #2e3440;
+	  border-bottom: 3px solid #3b4252;
+  	color: #d8dee9;
+  	transition-property: background-color;
+    transition-duration: .5s;
+  }
+  
+  tooltip * {
+    padding: 0px;
+  }
+
+  tooltip {
+    background: #2e3440;
+    border: 1px solid #81a1c1;
+    border-radius: 4px;
+  }
+
+  tooltip label {
+    text-shadow: none;
+    color: #d8dee9;
+  }
+
+  window#waybar.hidden {
+    opacity: 0.2;
+  }
+
+  #custom-start,
+  #workspaces,
+  #mode,
+  #cpu,
+  #custom-media,
+  #clock,
+  #pulseaudio,
+  #battery,
+  #tray {
+    padding: 0px 10px;
+    background-color: #3b4252 ;
+    margin: 2px 1px 5px 1px;
+    border: 3px solid rgba(0, 0, 0, 0);
+    border-radius: 8px;
+    background-clip: padding-box;
+  }
+
+  #custom-start {
+    padding: 0px 13px 0px 10px;
+    margin: 2px 1px 5px 2px;
+    font-size: 16px;
+    
+  }
+
+  #workspaces button,
+  #workspaces button.hover,
+  #workspaces button.focus {
+    border-radius: 0px;
+  }
+
+  #workspaces button {
+    padding: 0 3px;
+    min-width: 20px;
+    color: #5e81ac;
+  }
+  
+  #workspaces button.hover {
+    background-color: #434c5e;
+  }
+  
+  #workspaces button.focused {
+    color: #2e3440;
+    background-color: #5e81ac;
+  }
+  
+  #workspaces button.urgent {
+    color: #bf616a;
+  }
+  
+  #cpu {
+    color: #81a1c1;
+  }
+  
+  #custom-media {
+    background-color: #8fbcbb;
+    color: #2e3440;
+  }
+  
+  #clock {
+    margin: 2px 2px 5px 1px;
+    color: #81a1c1;
+  }
+  
+  #pulseaudio {
+    background-color: #81a1c1;
+    color: #2e3440;
+  }
+  
+  #pulseaudio.muted {
+    background-color: #bf616a;
+    color: #2e3440;
+  }
+  
+  #battery {
+    color: #98c379;
+  }
+  
+  #battery.charging, 
+  #battery.plugged {
+    background-color: #a3be8c;
+    color: #2e3440;
+  }
+  
+  @keyframes blink {
+      to {
+          background-color: #2e3440;
+          color: #bf616a;
+      }
+  }
+  
+  #battery.warning:not(.charging) {
+    background-color: #ebcb8b;
+    color: #2e3440;
+  }
+  
+  #battery.critical:not(.charging) {
+    background-color: #bf616a;
+    color: #2e3440;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+  
+  #taskbar button {
+    padding: 0px 1px 0px 2px;
+  }
+
+  #taskbar button.active {
+    border-radius: 0px;
+    border-bottom: 3px solid #81a1c1; 
+  }
+
+  #taskbar button.hover {
+    background-color: #434c5e;
+    border-radius: 0px;
+  }
