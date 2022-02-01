@@ -1,0 +1,107 @@
+ {
+    "layer": "top",
+    "position": "bottom",
+    "height": 34,
+    "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media"],
+    "modules-center": ["wlr/taskbar"],
+    "modules-right": ["pulseaudio", "cpu", "battery", "tray", "clock"],
+
+    "sway/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": true,
+         "format": "{icon}",
+         "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
+
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+
+    "tray": {
+        "spacing": 10
+    },
+
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "{:%H:%M} ",
+        "format-alt": "{:%d/%m/%Y} "
+    },
+
+    "cpu": {
+        "interval": 2,
+        "format": "{usage}% ",
+        "tooltip": false
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-icons": ["", "", "", "", ""]
+    },
+
+    "pulseaudio": {
+        "format": "{volume}% {icon} {format_source}",
+        "format-muted": "ﳌ {format_source}",
+        "format-bluetooth": "{volume}% {icon}  {format_source}",
+        "format-bluetooth-muted": " ﳌ {format_source}",
+        "format-source": "",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+
+    "custom/media": {
+        "tooltip": true,
+        "format": "{icon} {}",
+        "tooltip-format": "{}",
+        "return-type": "json",
+        "max-length": 25,
+        "format-icons": {
+            "spotify": "",
+            "default": "🎜"
+        },
+        "escape": true,
+        "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null",
+        "on-click": "playerctl --player=spotify play-pause"
+    },
+
+    "wlr/taskbar": {
+        "format": " {icon} ",
+        "icon-size": 13,
+        "icon-theme": "Papirus-Dark",
+        "tooltip-format": "{title}",
+        "on-click": "minimize-raise",
+        "on-click-middle": "close",
+        "ignore-list": [
+            "Spotify"
+        ],
+        "app_ids-mapping": {
+            "jetbrains-idea-ce": "intellij"
+          }
+
+    },
+
+    "custom/start": {
+        "format": "",
+        "tooltip": false
+    }
+
+}
