@@ -42,8 +42,8 @@ default_floating_border pixel 2
 
 ### Gaps
 
-gaps inner 10
-gaps outer 0
+gaps inner 8
+gaps outer 2
 
 ### Idle configuration
 
@@ -267,6 +267,7 @@ exec {
     flashfocus
     xsettingsd
     discord --start-minimized ; for_window [class="discord"] move container to scratchpad
+    keepassxc
 }
 
 # Gammastep
