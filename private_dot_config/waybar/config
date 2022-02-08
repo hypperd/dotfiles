@@ -101,7 +101,8 @@
 
     "custom/start": {
         "format": "",
-        "tooltip": false
+        "tooltip": false,
+        "on-click": "rofi -show drun -theme ~/.config/rofi/themes/launcher.rasi"
     }
 
 }
