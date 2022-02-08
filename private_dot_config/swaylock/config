@@ -5,7 +5,7 @@ indicator
 
 font=JetBrains Mono Nerd Font
 
-effect-blur=5x5
+effect-blur=7x5
 inside-color=2e3440
 inside-ver-color=2e3440
 inside-wrong-color=2e3440
