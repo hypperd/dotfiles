@@ -5,8 +5,8 @@ Repository for storage my configuration files of my linux installation.
 ### Details
 
 * **Distro:** Arch Linux (btw)
-* **WM:** sway
-* **Status bar:** waybar
+* **WM:** [sway](https://github.com/swaywm/sway)
+* **Status bar:** [waybar](https://github.com/Alexays/Waybar)
 
 ### Screenshot
 
