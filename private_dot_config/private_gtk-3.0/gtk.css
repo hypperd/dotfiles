@@ -5,5 +5,14 @@
 
 button:checked, button:active {
   color: #eceff4;
-  background: #5e81ac;
+  background-color: #5e81ac;
+}
+
+slider:active {
+  background-color: #5e81ac;
+  border-color: #5e81ac;
+}
+
+menuitem:hover {
+  background-color: #5e81ac;
 }

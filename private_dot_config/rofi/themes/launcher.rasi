@@ -1,26 +1,22 @@
-
 configuration {
     show-icons:             true;
     icon-theme:             "Papirus-Dark";       
     display-drun: 		    "";
-
     timeout {
-      action: "kb-cancel";
-      delay:  10;
+        action: "kb-cancel";
+        delay:  10;
     }
 }
 
 @theme "/dev/null"
 
 * {
-
     nord0:                  #2e3440;
     nord1:                  #3b4252;
     nord4:                  #d8dee980;
     nord6:                  #eceff4;
     nord9:                  #81A1C1;
     font:                   "jetBrains Mono Nerd Font 12";
-
 }
 
 window {
@@ -29,6 +25,7 @@ window {
     padding:                6;
     border:                 3;
     border-color:           @nord1;
+    border-radius:          0px;
 }
 
 mainbox {
@@ -43,7 +40,7 @@ listview {
     lines:                  7;
     columns:                1;
     scrollbar:              false;
-    padding:                7px 0px 0px 0px ;
+    padding:                5px 0px 0px 0px ;
     spacing:                2px;
     fixed-height:           0;
     border:                 0px;

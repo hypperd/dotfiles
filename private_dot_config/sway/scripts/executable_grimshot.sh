@@ -30,7 +30,7 @@ ACTION=${1:-usage}
 SUBJECT=${2:-screen}
 FILE=${3:-$(getTargetDirectory)/$(date +'%d-%m-%Y %H:%M:%S').png}
 
-if [ "$ACTION" != "save" ] && [ "$ACTION" != "copy" ] && [ "$ACTION" != "copy-save" ]; then
+if [ "$ACTION" != "save" ] && [ "$ACTION" != "copy" ] && [ "$ACTION" != "copy-save" ]  && [ "$ACTION" != "qr" ]; then
   echo "Usage:"
   echo "  grimshot [--notify] (copy|save) [active|screen|output|area|window] [FILE|-]"
   echo "  grimshot usage"
@@ -89,7 +89,7 @@ takeScreenshot() {
 }
 
 if [ "$SUBJECT" = "area" ] ; then
-  GEOM=$(slurp -d -b 00000064 -c 3b4252)
+  GEOM=$(slurp -b 00000064 -c 81a1c1)
   # Check if user exited slurp without selecting the area
   if [ -z "$GEOM" ]; then
     exit 1

@@ -6,7 +6,7 @@
     min-height: 0px;
   }
   
-  window#waybar { 
+  window#waybar {
 	  border-radius: 0px;
 	  background-color: #2e3440;
 	  border-bottom: 3px solid #3b4252;
@@ -14,20 +14,26 @@
   	transition-property: background-color;
     transition-duration: .5s;
   }
-  
-  tooltip * {
-    padding: 0px;
-  }
 
   tooltip {
+    padding: 3px;
+    border: 1px solid #3b4252;
+    border-radius: 0px;
+    box-shadow: none;
     background: #2e3440;
-    border: 1px solid #81a1c1;
-    border-radius: 4px;
   }
 
   tooltip label {
-    text-shadow: none;
     color: #d8dee9;
+    text-shadow: none;
+    font-family: 'Noto Sans Display';
+    font-size: 10pt;
+    font-weight: 500;
+  }
+
+  tooltip decoration {
+    border-radius: 0px;
+    box-shadow: none;
   }
 
   window#waybar.hidden {
@@ -42,6 +48,7 @@
   #clock,
   #pulseaudio,
   #battery,
+  #custom-wf-recorder,
   #tray {
     padding: 0px 10px;
     background-color: #3b4252 ;
@@ -54,8 +61,7 @@
   #custom-start {
     padding: 0px 13px 0px 10px;
     margin: 2px 1px 5px 2px;
-    font-size: 16px;
-    
+    font-size: 16px; 
   }
 
   #workspaces button,
@@ -70,7 +76,7 @@
     color: #5e81ac;
   }
   
-  #workspaces button.hover {
+  #workspaces button:hover {
     background-color: #434c5e;
   }
   
@@ -148,7 +154,13 @@
     border-bottom: 3px solid #81a1c1; 
   }
 
-  #taskbar button.hover {
+  #taskbar button:hover {
     background-color: #434c5e;
     border-radius: 0px;
+  }
+
+  #custom-wf-recorder {
+    color: #bf616a;
+    background-color: #2e3440;
+    padding: 0px;
   }

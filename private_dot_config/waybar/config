@@ -2,7 +2,7 @@
     "layer": "top",
     "position": "bottom",
     "height": 34,
-    "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media"],
+    "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media", "custom/wf-recorder"],
     "modules-center": ["wlr/taskbar"],
     "modules-right": ["pulseaudio", "cpu", "battery", "tray", "clock"],
 
@@ -103,6 +103,16 @@
         "format": "",
         "tooltip": false,
         "on-click": "rofi -show drun -theme ~/.config/rofi/themes/launcher.rasi"
-    }
+    },
+
+    "custom/wf-recorder": {
+		"format": "{}",
+		"interval": "once",
+		"exec": "echo ''",
+		"tooltip": false,
+		"exec-if": "pgrep 'wf-recorder'",
+		"on-click": "~/.config/rofi/scripts/recorder.sh --stop",
+		"signal": 8
+	}
 
 }
