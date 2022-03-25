@@ -70,12 +70,14 @@ ZSH_THEME="bira"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+	git
+	zsh-autosuggestions
+	docker 
+	docker-compose
+)
 
 source $ZSH/oh-my-zsh.sh
-
-# podman autocomplete
-autoload -U compinit; compinit
 
 # User configuration
 
@@ -99,6 +101,5 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias yay="yay --aur"
-
 export PATH="$PATH:$HOME/.spicetify"
+autoload -U compinit; compinit

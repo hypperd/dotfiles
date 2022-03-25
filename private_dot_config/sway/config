@@ -17,6 +17,9 @@ set $mod Mod4
 # Terminal emulator
 set $term kitty
 
+# Rofi scripts
+set $rofi ~/.config/rofi/scripts/
+
 # Application launcher
 #set $menu dmenu_path | dmenu | xargs swaymsg exec --
 set $menu rofi -show drun -theme ~/.config/rofi/themes/launcher.rasi
@@ -42,7 +45,7 @@ default_floating_border pixel 2
 
 ### Gaps
 
-gaps inner 8
+gaps inner 6
 gaps outer 2
 
 ### Idle configuration
@@ -50,7 +53,7 @@ gaps outer 2
 exec swayidle -w \
 	timeout 360 'swaylock' \
     timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    timeout 840 'systemctl suspend' \
+    timeout 840 'systemctl suspend && playerctl stop' \
     before-sleep 'swaylock' \
     after-resume 'swaymsg "output * dpms on"' \
     lock 'swaylock'
@@ -77,9 +80,6 @@ input {
         xkb_layout br
         xkb_variant abnt2
     }
-    "2:10:TPPS/2_IBM_TrackPoint" {
-        events disabled
-    }
 }
 
 
@@ -103,7 +103,8 @@ input {
     bindsym $mod+Shift+c reload
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    #bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Shift+e exec $rofi/powermenu.sh
 
 # Moving around:
     
@@ -205,31 +206,45 @@ mode "Resize" {
 # Use Resize mode
 bindsym $mod+r mode "Resize"
 
-# Multimedia keys:
+# XF86 keys:
 
+    # Volume control
     bindsym --locked XF86AudioRaiseVolume exec pamixer -i 2
     bindsym --locked XF86AudioLowerVolume exec pamixer -d 2
     bindsym --locked XF86AudioMute exec pamixer -t
     bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
     
+    # Player control
     bindsym --locked XF86AudioPlay exec playerctl --player=spotify play-pause
     bindsym --locked XF86AudioPause exec playerctl --player=spotify play-pause
     bindsym --locked XF86AudioNext exec playerctl --player=spotify next
     bindsym --locked XF86AudioPrev exec playerctl --player=spotify previous
+
+    # Brightness control
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set +5% 
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+
+    # Custom player control (Laptop keyboard)
     bindsym --locked XF86Explorer exec playerctl --player=spotify next
     bindsym --locked XF86LaunchA exec playerctl --player=spotify play-pause
     bindsym --locked XF86Search exec playerctl --player=spotify previous
     bindsym --locked XF86Tools exec playerctl stop
 
+    # Dpms toggle laptop screen
+    bindsym --locked XF86Display output LVDS-1 dpms toggle
+
+# Screenshot
+
+    bindsym Print exec ~/.config/sway/scripts/grimshot.sh --notify copy-save output
+    bindsym $mod+Shift+s exec ~/.config/sway/scripts/grimshot.sh --notify copy area
+
 # Misc:
 
     bindsym $mod+l exec loginctl lock-session
-    bindsym Print exec ~/.config/sway/scripts/grimshot.sh --notify copy-save output
-    bindsym $mod+Shift+s exec ~/.config/sway/scripts/grimshot.sh --notify copy-save area
     bindsym $mod+period exec rofi -show emoji 
     bindsym $mod+n exec nemo
+    bindsym $mod+g exec $rofi/recorder.sh
+    
 ### Status Bar:
 
 bar {
@@ -285,6 +300,7 @@ for_window [class="Lxappearance"] floating enable
 for_window [app_id="nemo"] floating enable
 for_window [app_id="nemo" title="Home"] floating disable
 for_window [class="Spotify"] move container to workspace 6
+for_window [app_id="imv"] border pixel 2
 
 ## Intellij
 for_window [class="jetbrains-idea-ce" title="win0"] floating enable
