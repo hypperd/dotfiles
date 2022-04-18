@@ -1,0 +1,106 @@
+;; Calendar
+(defpoll calendar_day 
+	:interval "10h"
+	"date '+%d'"
+)
+
+(defpoll calendar_month 
+	:interval "10h"
+	"date '+%m'"
+)
+
+(defpoll calendar_year 
+	:interval "10h"
+	"date '+%Y'"
+)
+
+(defpoll date
+	:interval "10h"
+	"date '+%a, %b %y'"
+)
+
+(defwidget cal []
+	(box 
+		:class "cal-box" 
+		:orientation "v"
+		:space-evenly false
+
+		(label
+			:class "cal-greeter"
+			:halign "center"
+			:text date
+		)
+		
+		(box
+			:class "cal-inner-box"
+			(calendar
+				:class "cal"
+				:day calendar_day 
+				:month "${calendar_month - 1}"
+				:year calendar_year
+				:show-heading true
+				:show-day-names true
+				:show-week-numbers false
+			)
+		)
+	)
+)
+
+(defwindow calendar
+	:geometry 
+		(geometry 
+			:x "5px" 
+			:y "5px" 
+			:width "270px" 
+			:height "60px"
+			:anchor "right bottom"
+		)
+	(cal)
+)
+
+;; Recorder Menu
+
+(defwidget wf-recorder []
+	(box
+		:space-evenly false
+		:class "recorder"
+		:orientation "v"
+		(button
+			:class "button"
+			:onclick "eww close recorder"
+			(label
+				:text ""
+			)
+		)
+		(button
+			:class "button"
+			(label
+				:text ""
+			)
+		)
+		(button
+			:class "button"
+			(label
+				:text ""
+			)
+		)
+		(button
+			:class "button-end"
+			(label
+				:text ""
+			)
+		)
+	)
+)
+
+(defwindow recorder
+	:geometry
+		(geometry
+			:x "5px"
+			:width "64px"
+			:height "60px"
+			:anchor "right center"
+		)
+		:focusable true
+	(wf-recorder)
+)
