@@ -1,39 +1,39 @@
 #!/usr/bin/env bash
 
-##
 ## Modified from https://github.com/adi1090x/rofi
-##
 
-dir="$HOME/.config/rofi/themes/"
-rofi_command="rofi -theme $dir/five.rasi"
+DIR="$HOME/.config/rofi/themes/"
+ROFI_COMMAND="rofi -theme $DIR/five.rasi"
 
 # Options
-shutdown=""
-reboot=""
-lock=""
-suspend=""
-logout=""
+SHUTDOWN=""
+REBOOT=""
+LOCK=""
+SUSPEND=""
+LOGOUT=""
 
 # Variable passed to rofi
-options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
+OPTIONS="$SHUTDOWN\n$REBOOT\n$LOCK\n$SUSPEND\n$LOGOUT"
 
+# SIGTERM rofi
 pkill rofi
-chosen="$(echo -e "$options" | $rofi_command -dmenu -selected-row 2)"
 
-case $chosen in
-    $shutdown)
-		systemctl poweroff
-        ;;
-    $reboot)
-		systemctl reboot
-        ;;
-    $lock)
-		loginctl lock-session
-        ;;
-    $suspend)
-		systemctl suspend
-        ;;
-    $logout)
-		swaymsg exit
-        ;;
+CHOSEN="$(echo -e $OPTIONS | $ROFI_COMMAND -dmenu -selected-row 2)"
+
+case "$CHOSEN" in
+"$SHUTDOWN")
+	systemctl poweroff
+	;;
+"$REBOOT")
+	systemctl reboot
+	;;
+"$LOCK")
+	loginctl lock-session
+	;;
+"$SUSPEND")
+	systemctl suspend
+	;;
+"$LOGOUT")
+	swaymsg exit
+	;;
 esac

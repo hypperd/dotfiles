@@ -1,6 +1,5 @@
 # Sway config
 # Read `man 5 sway` for a complete reference.
-
 include /etc/sway/config.d/*
 
 # Disable mouse focus
@@ -17,23 +16,22 @@ set $mod Mod4
 # Terminal emulator
 set $term kitty
 
+# sway scripts
+set $scripts ~/.config/sway/scripts/
+
 # Rofi scripts
 set $rofi ~/.config/rofi/scripts/
 
 # Application launcher
-#set $menu dmenu_path | dmenu | xargs swaymsg exec --
-set $menu rofi -show drun -theme ~/.config/rofi/themes/launcher.rasi
+set $menu $rofi/launcher.sh
 
 ### Output configuration
 
-output {
-	LVDS-1 {
-		scale 1
-	}
-	'Samsung Electric Company SAMSUNG 0x00000000' {
-		scale 1
-	}
+output LVDS-1 {
+	scale 1
 }
+
+exec_always 'pkill kanshi; exec kanshi'
 
 # Wallpaper
 exec ~/.azotebg
@@ -43,6 +41,13 @@ exec ~/.azotebg
 default_border pixel 2
 default_floating_border pixel 2
 
+## Shadows
+
+#border_images.focused ~/.config/sway/shadows.png
+#border_images.focused_inactive ~/.config/sway/shadows.png
+#border_images.unfocused ~/.config/sway/shadows.png
+#border_images.urgent ~/.config/sway/shadows.png
+
 ### Gaps
 
 gaps inner 6
@@ -51,15 +56,15 @@ gaps outer 2
 ### Idle configuration
 
 exec swayidle -w \
-	timeout 360 'swaylock' \
-    timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    timeout 840 'systemctl suspend && playerctl stop' \
-    before-sleep 'swaylock' \
-    after-resume 'swaymsg "output * dpms on"' \
-    lock 'swaylock'
+	    timeout 360 'swaylock' \
+        timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+        timeout 840 'systemctl suspend && playerctl stop' \
+        before-sleep 'swaylock' \
+        after-resume 'swaymsg "output * dpms on"' \
+        lock 'swaylock'
 
 # idle inhibit with audio playing or capturing
-exec sway-audio-idle-inhibit
+exec 'pkill sway-audio-idle; exec sway-audio-idle-inhibit'
 
 ### Input configuration
 
@@ -81,7 +86,6 @@ input {
         xkb_variant abnt2
     }
 }
-
 
 ### Key bindings
 
@@ -161,9 +165,10 @@ input {
     bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
-	bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
+	# bindsym $mod+s layout stacking
+    # bindsym $mod+w layout tabbed
+    # bindsym $mod+e layout toggle split
+    bindsym $mod+Shift+semicolon layout toggle split tabbed stacking
 
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
@@ -183,7 +188,8 @@ input {
 	bindsym $mod+Shift+minus move scratchpad
 
     # Show the next scratchpad window or hide the focused scratchpad window.
-	bindsym $mod+minus scratchpad show
+	#bindsym $mod+minus scratchpad show
+    bindsym Alt+Tab scratchpad show
 
 # Resizing containers:
 
@@ -231,12 +237,13 @@ bindsym $mod+r mode "Resize"
     bindsym --locked XF86Tools exec playerctl stop
 
     # Dpms toggle laptop screen
-    bindsym --locked XF86Display output LVDS-1 dpms toggle
+    bindsym XF86Display output LVDS-1 dpms toggle
 
 # Screenshot
 
-    bindsym Print exec ~/.config/sway/scripts/grimshot.sh --notify copy-save output
-    bindsym $mod+Shift+s exec ~/.config/sway/scripts/grimshot.sh --notify copy area
+    bindsym --no-repeat Print exec $scripts/grimshot --notify copy-save output
+    bindsym --no-repeat $mod+Shift+s exec  $scripts/grimshot --notify copy area
+    bindsym --no-repeat $mod+Shift+w exec  $scripts/grimshot --notify copy window
 
 # Misc:
 
@@ -259,7 +266,7 @@ exec_always ~/.config/sway/scripts/import-gsettings.sh
 # window colors           
 
 set $bg-color                   #81a1c1
-set $inactive-bg-color          #3b4252
+set $inactive-bg-color          #4c566a
 set $text-color                 #eceff4
 set $inactive-text-color        #d8dee9
 set $urgent-bg-color            #ebcb8b                                            
@@ -274,7 +281,6 @@ client.urgent           		$urgent-bg-color        $urgent-bg-color        $text-
 ### Autostart applications 
 
 exec {
-    kanshi
     nm-applet --indicator
     dunst
     playerctld

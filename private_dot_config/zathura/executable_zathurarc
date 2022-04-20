@@ -43,8 +43,8 @@ set index-fg                    "#ECEFF4" # Foreground
 set index-active-bg             "#5E81AC" # Current Line
 set index-active-fg             "#ECEFF4" # Foreground
 
-set recolor-lightcolor		"#2e3440"
-set recolor-darkcolor		"#ECEFF4"
+set recolor-lightcolor          "#2E3440"
+set recolor-darkcolor           "#ECEFF4"
 
 set page-padding		15
 set font                        "JetBrains Mono Nerd Font 12"

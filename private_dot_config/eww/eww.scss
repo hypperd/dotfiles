@@ -17,7 +17,7 @@ $nord10: #81a1c1;
 	background-color: $background;
 	border-radius: 8px;
 	font-size: 1em;
-	font-family: "JetBrains Mono";
+	font-family: monofur;
 	padding: 0.5em;
 
 	.cal-greeter {
@@ -69,30 +69,5 @@ calendar {
 	
 	&:hover {
 		background-color: $nord1;
-	}
-}
-
-
-
-// Recorder
-
-.recorder {
-	border-radius: 8px;
-	border: 2px solid $nord1;
-	background-color: $background;
-	padding: 4px;
-	font-size: 20px;
-	font-family: feather;
-
-	.button {
-		border-radius: 8px;
-		background-color: $nord1;
-		padding: 14px;
-		margin-bottom: 4px;
-	}
-	.button-end {
-		border-radius: 8px;
-		background-color: $nord1;
-		padding: 14px;
 	}
 }

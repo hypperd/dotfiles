@@ -1,11 +1,6 @@
-/*
- *
- * Author  : Aditya Shakya
- * Mail    : adi1090x@gmail.com
- * Github  : @adi1090x
- * Twitter : @adi1090x
- *
- */
+//
+// Modified from https://github.com/adi1090x/rofi
+//
 
 configuration {
     show-icons:                     false;
@@ -16,8 +11,6 @@ configuration {
         delay:  5;
     }
 }
-
-// @theme "/dev/null"
 
 * {
     accent:             #81a1c1;
@@ -37,7 +30,7 @@ window {
     location:                       east;
     x-offset:                       -5px;
     y-offset:                       0px;
-    border:                         3px;
+    border:                         2px;
     border-color:                   @background-light;
 }
 

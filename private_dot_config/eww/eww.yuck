@@ -30,7 +30,7 @@
 			:halign "center"
 			:text date
 		)
-		
+
 		(box
 			:class "cal-inner-box"
 			(calendar
@@ -56,51 +56,4 @@
 			:anchor "right bottom"
 		)
 	(cal)
-)
-
-;; Recorder Menu
-
-(defwidget wf-recorder []
-	(box
-		:space-evenly false
-		:class "recorder"
-		:orientation "v"
-		(button
-			:class "button"
-			:onclick "eww close recorder"
-			(label
-				:text ""
-			)
-		)
-		(button
-			:class "button"
-			(label
-				:text ""
-			)
-		)
-		(button
-			:class "button"
-			(label
-				:text ""
-			)
-		)
-		(button
-			:class "button-end"
-			(label
-				:text ""
-			)
-		)
-	)
-)
-
-(defwindow recorder
-	:geometry
-		(geometry
-			:x "5px"
-			:width "64px"
-			:height "60px"
-			:anchor "right center"
-		)
-		:focusable true
-	(wf-recorder)
 )
