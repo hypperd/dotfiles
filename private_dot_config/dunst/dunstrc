@@ -151,7 +151,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "%a\n<b>%s</b>\n%b"
+    format = "<b>%s</b>\n%b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -316,8 +316,11 @@
     appname = Spotify
     frame_color = "#a3be8c"
     highlight = "#a3be8c"
-    format = "<b><span size='9pt'> <span foreground='#A3BE8C'> </span>Now playing</span></b>\n%s\n%b"
+    format = "<b><span foreground='#A3BE8C'> </span>Now playing</b>\n%s\n%b"
     timeout = 4
+[network_manager]
+    appname = NetworkManager
+    alignment = left
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.

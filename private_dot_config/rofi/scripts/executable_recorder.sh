@@ -1,91 +1,81 @@
 #!/usr/bin/env bash
 
-fileName=$(date +'%d-%m-%Y %H:%M:%S.mkv')
-filePath=$(xdg-user-dir VIDEOS)/Recordings/$fileName
-sink="$(pamixer --get-default-sink | awk ' NR==2 {print $2}' | sed 's/"//g').monitor"
+FILE="$(xdg-user-dir VIDEOS)/Recording/$(date '+%d-%m-%Y %H:%M:%S').mp4"
+AUDIO="$(pamixer --get-default-sink | awk ' NR==2 {print $2}' | sed 's/"//g').monitor"
+SLURP_CMD="slurp -b 00000064 -c 81a1c1 -s 00000000 -B d8dee926 -w 2"
+
+notify() {
+    TITLE=${1:-"Recording"}
+	MESSAGE=${2:-"OK"}
+    notify-send -i /usr/share/icons/Papirus-Dark/64x64/apps/cs-screen.svg -t 3000 -a wf-recorder -u low "$TITLE" "$MESSAGE"
+}
 
 startRecording() {
-    capture=$1
-    value=$2
-    wf-recorder -f "$filePath" -c h264_vaapi -d /dev/dri/renderD128 --bframes 0 --force-yuv --audio=$sink $capture "$value" > /dev/null 2>&1 &
+    CAPTURE=$1
+    notify "Recording Started" "$(basename "$FILE")"
+    wf-recorder --audio="$AUDIO" -f "$FILE" --codec=h264_vaapi --device=/dev/dri/renderD128 --bframes=0 --force-yuv "$CAPTURE" > /dev/null 2>&1 &
     pkill -RTMIN+8 waybar
 }
 
-notify() {
-  notify-send -i /usr/share/icons/Papirus-Dark/64x64/apps/cs-screen.svg -t 3000 -a grimshot -u low "$@"
-}
-
-die() {
-    notify "Recording Complete" "$fileName"
+stopRecording() {
+    notify "Recording Complete" "$(basename "$FILE")"
     pkill --signal SIGINT wf-recorder
     pkill -RTMIN+8 waybar
 }
 
 case "$1" in
     "--stop")
-        if [ ! -z $(pgrep wf-recorder) ]; then
-            die
+        if [ -n "$(pgrep wf-recorder)" ]; then
+            stopRecording
         fi
         exit 0
         ;;
 esac
 
 dir="$HOME/.config/rofi/themes/"
-rofi_command="rofi -theme $dir/five.rasi"
+ROFI_COMMAND="rofi -theme $dir/five.rasi"
 
-# Options
-state=""
-screen=""
-area=""
-window=""
+SCREEN=""
+AREA=""
+WINDOW=""
+STATUS="-u 0"
+STATE=""
 
-# recording
-status=""
-
-if [ -z $(pgrep wf-recorder) ]; then
-    status="-a 0"
-    state=""
-else
-    status="-u 0"
-    state=""
+if [[ -z "$(pgrep wf-recorder)" ]]; then
+    STATUS="-a 0"
+    STATE=""
 fi
 
-options="$state\n$screen\n$area\n$window"
+OPTIONS="$STATE\n$SCREEN\n$AREA\n$WINDOW"
+CHOSEN="$(echo -e $OPTIONS | $ROFI_COMMAND $STATUS -dmenu -l 4 -selected-row 1)"
 
-chosen="$(echo -e "$options" | $rofi_command $status -dmenu -l 4 -selected-row 1)"
+if [[ -z "$(pgrep wf-recorder)" ]]; then
+    case "$CHOSEN" in
+        "$SCREEN")
+            OUTPUT=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused)' | jq -r '.name')
+            startRecording --output="$OUTPUT"
+        ;;
+        "$AREA")
+            GEOM=$($SLURP_CMD)
+	        
+	        if [ -z "$GEOM" ]; then
+		        exit 0
+	        fi
 
-case $chosen in
-    $screen)
-		if [ -z $(pgrep wf-recorder) ]; then
-            notify "Recording Started" "Recording output"
-            output=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused)' | jq -r '.name')
-            startRecording --output "$output"
-        else
-            die
-        fi
+            startRecording --geometry="$GEOM"
         ;;
-    $area)
-        if [ -z $(pgrep wf-recorder) ]; then
-		    geom="$(slurp -b 00000064 -c 81a1c1)"
-            if [ -z "$geom" ]; then
-                exit 0
-            fi
-            notify "Recording Started" "Recording area"
-            startRecording --geometry "$geom"
-        else 
-            die
-        fi
+        "$WINDOW")
+            GEOM=$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | $SLURP_CMD)
+	        
+            if [ -z "$GEOM" ]; then
+		        exit 0
+	        fi
+
+            startRecording --geometry="$GEOM"
         ;;
-    $window)
-        if [ -z $(pgrep wf-recorder) ]; then
-		    geom="$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp -b 00000064 -c 81a1c1 -B 3b425264)"
-            if [ -z "$geom" ]; then
-                exit 0
-            fi
-            notify "Recording Started" "Recording window"
-            startRecording --geometry "$geom"
-        else 
-            die
-        fi
-        ;;
-esac
+    esac
+else
+    if [[ -n "$CHOSEN" ]] && [[ "$CHOSEN" != "$STATE" ]]; then
+        stopRecording
+    fi
+fi

@@ -3,8 +3,15 @@
     "position": "bottom",
     "height": 34,
     "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media", "custom/wf-recorder"],
-    "modules-center": ["wlr/taskbar"],
+    //Change "sway/window" to "wlr/taskbar" for more windows like taskbar 
+    "modules-center": ["sway/window"],
     "modules-right": ["pulseaudio", "cpu", "battery", "tray", "clock"],
+
+    "sway/window": {
+        "format": "{app_id}",
+        "max-length": 50,
+        "icon": false
+    },
 
     "sway/workspaces": {
          "disable-scroll": true,
@@ -17,6 +24,9 @@
             "4": "4",
             "5": "5",
             "6": "6",
+            "7": "8",
+            "8": "8",
+            "9": "9",
             "urgent": "",
             "focused": "",
             "default": ""
@@ -32,9 +42,8 @@
     },
 
     "clock": {
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": "{:%H:%M} ",
-        "format-alt": "{:%d/%m/%Y} "
+        "on-click": "eww open --screen 0 --toggle calendar > /dev/null"
     },
 
     "cpu": {
@@ -56,9 +65,7 @@
 
     "pulseaudio": {
         "format": "{volume}% {icon} {format_source}",
-        "format-muted": "ﳌ {format_source}",
-        "format-bluetooth": "{volume}% {icon}  {format_source}",
-        "format-bluetooth-muted": " ﳌ {format_source}",
+        "format-muted": "{format_source} ﳌ",
         "format-source": "",
         "format-source-muted": "",
         "format-icons": {
@@ -83,36 +90,38 @@
         "on-click": "playerctl --player=spotify play-pause"
     },
 
+    /*
+    //    Taskbar icons like Windows
+        
     "wlr/taskbar": {
         "format": " {icon} ",
         "icon-size": 13,
         "icon-theme": "Papirus-Dark",
         "tooltip-format": "{title}",
-        "on-click": "minimize-raise",
-        "on-click-middle": "close",
+        "on-click": "activate",
         "ignore-list": [
             "Spotify"
         ],
         "app_ids-mapping": {
             "jetbrains-idea-ce": "intellij"
-          }
+        }
 
     },
+    */
 
     "custom/start": {
         "format": "",
         "tooltip": false,
-        "on-click": "rofi -show drun -theme ~/.config/rofi/themes/launcher.rasi"
+        "on-click": ""
     },
 
     "custom/wf-recorder": {
 		"format": "{}",
 		"interval": "once",
-		"exec": "echo ''",
 		"tooltip": false,
+        "exec": "echo ''",
 		"exec-if": "pgrep 'wf-recorder'",
 		"on-click": "~/.config/rofi/scripts/recorder.sh --stop",
 		"signal": 8
 	}
-
 }
