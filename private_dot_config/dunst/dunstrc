@@ -318,9 +318,6 @@
     highlight = "#a3be8c"
     format = "<b><span foreground='#A3BE8C'> </span>Now playing</b>\n%s\n%b"
     timeout = 4
-[network_manager]
-    appname = NetworkManager
-    alignment = left
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.

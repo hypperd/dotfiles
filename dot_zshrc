@@ -101,5 +101,4 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 alias code="code-insiders"
 
-export PATH="$PATH:$HOME/.spicetify"
 autoload -U compinit; compinit

@@ -17,7 +17,7 @@ $nord10: #81a1c1;
 	background-color: $background;
 	border-radius: 8px;
 	font-size: 1em;
-	font-family: monofur;
+	font-family: "JetBrains Mono";
 	padding: 0.5em;
 
 	.cal-greeter {
@@ -71,3 +71,14 @@ calendar {
 		background-color: $nord1;
 	}
 }
+
+// .launchermenu-body {
+// 	background-color: $background;
+// 	border: 2px solid $nord1;
+// 	border-radius: 8px;
+
+// 	.profile-picture {
+// 		border-radius: 100%;
+// 		background-size: cover;
+// 	}
+// }

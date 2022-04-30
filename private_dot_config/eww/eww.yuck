@@ -1,23 +1,8 @@
 ;; Calendar
-(defpoll calendar_day 
-	:interval "10h"
-	"date '+%d'"
-)
-
-(defpoll calendar_month 
-	:interval "10h"
-	"date '+%m'"
-)
-
-(defpoll calendar_year 
-	:interval "10h"
-	"date '+%Y'"
-)
-
-(defpoll date
-	:interval "10h"
-	"date '+%a, %b %y'"
-)
+(defpoll calendar_day :interval "10h" `date '+%d'`)
+(defpoll calendar_month :interval "10h" `date '+%m'`)
+(defpoll calendar_year :interval "10h" `date '+%Y'`)
+(defpoll date  :interval "10h" `date '+%a, %b %y'`)
 
 (defwidget cal []
 	(box 
@@ -57,3 +42,43 @@
 		)
 	(cal)
 )
+
+;; launchermenu
+
+; (defvar IMAGE "/home/hypper/Pictures/Saved Pictures/72967073_p0.png")
+; (defpoll username :interval "48h"  "whoami")
+
+; (defwidget launchermenu []
+; 	(box
+; 		:class "launchermenu-body"
+; 		:orientation "v"
+; 		:space-evenly false
+; 		(box 
+; 			:class "profile-picture" 
+; 			:halign "center" 
+; 			:style "background-image: url('${IMAGE}');"
+; 			:width 250 
+; 			:height 250
+; 			:space-evenly false
+; 		)
+; 		(label 
+; 			:text username
+; 			:class "username"
+; 		)
+; 	)
+
+; )
+
+
+
+; (defwindow launchermenu
+; 	:geometry
+; 		(geometry
+; 			:x "5px" 
+; 			:y "5px" 
+; 			:width "500px" 
+; 			:height "50%"
+; 			:anchor "bottom left"
+; 		)
+; 	(launchermenu)
+; )
