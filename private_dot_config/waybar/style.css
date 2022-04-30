@@ -144,9 +144,8 @@ window#waybar.hidden {
 	animation-iteration-count: infinite;
 	animation-direction: alternate;
 }
-/*
-//	Style for taskbar
 
+/* Style for taskbar
 #taskbar button {
   	padding: 0px 1px 0px 2px;
 }
@@ -159,6 +158,7 @@ window#waybar.hidden {
   	background-color: #2e3440;
   	border-radius: 0px;
 }
+*/
 
 #custom-wf-recorder {
   	color: #bf616a;
@@ -169,7 +169,6 @@ window#waybar.hidden {
 #clock, #cpu, #battery:not(.charging), #workspaces button {
 	font-weight: 500;
 }
-*/
 
 #window {
 	font-family: monofur;

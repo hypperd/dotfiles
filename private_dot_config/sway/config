@@ -1,31 +1,20 @@
-# Sway config
-# Read `man 5 sway` for a complete reference.
+## Sway config
+## Read 'man 5 sway' for a complete reference.
+
 include /etc/sway/config.d/*
 
-# Disable mouse focus
-focus_follows_mouse no
+##-- Fonts (Global) ----------------------
 
-# Set sway font
-font pango: JetBrains Mono Nerd Font 10
+font pango: 'JetBrains Mono SemiBold 10'
+title_align center
 
-### Variables
+##-- Variables ---------------------------
 
-# Mod key.
 set $mod Mod4
-
-# Terminal emulator
 set $term kitty
+set $bin ~/.bin
 
-# sway scripts
-set $scripts ~/.config/sway/scripts/
-
-# Rofi scripts
-set $rofi ~/.config/rofi/scripts/
-
-# Application launcher
-set $menu $rofi/launcher.sh
-
-### Output configuration
+##-- Output Config ----------------------
 
 output LVDS-1 {
 	scale 1
@@ -33,40 +22,23 @@ output LVDS-1 {
 
 exec_always 'pkill kanshi; exec kanshi'
 
-# Wallpaper
+# -- Wallpaper --
+
 exec ~/.azotebg
 
-### Window borders
-
-default_border pixel 2
-default_floating_border pixel 2
-
-## Shadows
-
-#border_images.focused ~/.config/sway/shadows.png
-#border_images.focused_inactive ~/.config/sway/shadows.png
-#border_images.unfocused ~/.config/sway/shadows.png
-#border_images.urgent ~/.config/sway/shadows.png
-
-### Gaps
-
-gaps inner 6
-gaps outer 2
-
-### Idle configuration
+##-- Idle Config -------------------------
 
 exec swayidle -w \
 	    timeout 360 'swaylock' \
         timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-        timeout 840 'systemctl suspend && playerctl stop' \
-        before-sleep 'swaylock' \
+        timeout 840 'systemctl suspend ; playerctl stop' \
+        before-sleep 'pkill rofi ; swaylock' \
         after-resume 'swaymsg "output * dpms on"' \
-        lock 'swaylock'
+        lock 'pkill rofi ; swaylock'
 
-# idle inhibit with audio playing or capturing
 exec 'pkill sway-audio-idle; exec sway-audio-idle-inhibit'
 
-### Input configuration
+##-- Input Config ------------------------
 
 input {
 	"type:touchpad" {
@@ -87,121 +59,151 @@ input {
     }
 }
 
-### Key bindings
+##-- Workspaces ---------------------
 
-# Basics:
+# Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
 
-    # Start a terminal
-    bindsym $mod+Return exec $term
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
 
-    # Kill focused window
-    bindsym $mod+Shift+q kill
+# Switch to workspace with arrow keys
+bindsym $mod+Control+Right workspace next
+bindsym $mod+Control+Left workspace prev
 
-    # Start your launcher
-    bindsym $mod+d exec $menu
+#Move workspace to another monitor
+bindsym $mod+Control+Shift+Right move workspace to output right
+bindsym $mod+Control+Shift+Left move workspace to output left
 
-	# Resize and move mode:
-    floating_modifier $mod normal
+##-- Key Bindings ------------------------
 
-    # Reload the configuration file
-    bindsym $mod+Shift+c reload
+# -- Basics --
 
-    # Exit sway (logs you out of your Wayland session)
-    #bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
-    bindsym $mod+Shift+e exec $rofi/powermenu.sh
+# Open terminal
+bindsym $mod+Return exec $term
 
-# Moving around:
+# close focused window
+bindsym --no-repeat $mod+Shift+q kill
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod normal
+
+# Reload sway
+bindsym $mod+Shift+c reload
+
+# -- Moving around --
     
-    # Move your focus around
-    bindsym $mod+Left focus left
-    bindsym $mod+Down focus down
-    bindsym $mod+Up focus up
-    bindsym $mod+Right focus right
+# Move your focus around
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
 
-    # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+Left move left
-    bindsym $mod+Shift+Down move down
-    bindsym $mod+Shift+Up move up
-    bindsym $mod+Shift+Right move right
+# disable focus with mouse
+focus_follows_mouse no
 
-# Workspaces:
+# -- Layout stuff --
 
-    # Switch to workspace
-    bindsym $mod+1 workspace number 1
-    bindsym $mod+2 workspace number 2
-    bindsym $mod+3 workspace number 3
-    bindsym $mod+4 workspace number 4
-    bindsym $mod+5 workspace number 5
-    bindsym $mod+6 workspace number 6
-    bindsym $mod+7 workspace number 7
-    bindsym $mod+8 workspace number 8
-    bindsym $mod+9 workspace number 9
-    bindsym $mod+0 workspace number 10
+# split
+bindsym $mod+b splith
+bindsym $mod+v splitv
 
-	# Move focused container to workspace
-    bindsym $mod+Shift+1 move container to workspace number 1
-	bindsym $mod+Shift+2 move container to workspace number 2
-	bindsym $mod+Shift+3 move container to workspace number 3
-	bindsym $mod+Shift+4 move container to workspace number 4
-	bindsym $mod+Shift+5 move container to workspace number 5
-	bindsym $mod+Shift+6 move container to workspace number 6
-    bindsym $mod+Shift+7 move container to workspace number 7
-    bindsym $mod+Shift+8 move container to workspace number 8
-    bindsym $mod+Shift+9 move container to workspace number 9
-    bindsym $mod+Shift+0 move container to workspace number 10
+# Switch the current container between different layout styles
+bindsym $mod+Shift+semicolon layout toggle split tabbed stacking
+
+# Make the current focus fullscreen
+bindsym $mod+f fullscreen
+
+# Toggle the current focus between tiling and floating mode
+bindsym $mod+Shift+space floating toggle
+
+# Swap focus between the tiling area and the floating area
+bindsym $mod+space focus mode_toggle
+
+# Move focus to the parent container
+bindsym $mod+a focus parent
+
+# -- Scratchpad --
     
-    # Switch to workspace with arrow keys
-    bindsym $mod+Control+Right workspace next
-    bindsym $mod+Control+Left workspace prev
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
 
-	#Move workspace to another monitor
-    bindsym $mod+Control+Shift+Right move workspace to output right
-    bindsym $mod+Control+Shift+Left move workspace to output left
+# Show the next scratchpad window or hide the focused scratchpad window.
+bindsym Alt+Tab scratchpad show
 
-# Layout stuff:
+# -- Function keys --
 
-    # split
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
-
-    # Switch the current container between different layout styles
-	# bindsym $mod+s layout stacking
-    # bindsym $mod+w layout tabbed
-    # bindsym $mod+e layout toggle split
-    bindsym $mod+Shift+semicolon layout toggle split tabbed stacking
-
-    # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
-
-    # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
-
-    # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
-
-    # Move focus to the parent container
-    bindsym $mod+a focus parent
-
-# Scratchpad:
+# Volume control
+bindsym --locked XF86AudioRaiseVolume exec pamixer -i 2
+bindsym --locked XF86AudioLowerVolume exec pamixer -d 2
+bindsym --locked XF86AudioMute exec pamixer -t
+bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
     
-	# Move the currently focused window to the scratchpad
-	bindsym $mod+Shift+minus move scratchpad
+# Player control
+bindsym --locked XF86AudioPlay exec playerctl --player=spotify play-pause
+bindsym --locked XF86AudioPause exec playerctl --player=spotify play-pause
+bindsym --locked XF86AudioNext exec playerctl --player=spotify next
+bindsym --locked XF86AudioPrev exec playerctl --player=spotify previous
 
-    # Show the next scratchpad window or hide the focused scratchpad window.
-	#bindsym $mod+minus scratchpad show
-    bindsym Alt+Tab scratchpad show
+# Brightness control
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set +5% 
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 
-# Resizing containers:
+# Custom player control (Laptop keyboard)
+bindsym --locked XF86Explorer exec playerctl --player=spotify next
+bindsym --locked XF86LaunchA exec playerctl --player=spotify play-pause
+bindsym --locked XF86Search exec playerctl --player=spotify previous
+bindsym --locked XF86Tools exec playerctl stop
+
+# Dpms toggle laptop screen
+bindsym --no-repeat XF86Display output LVDS-1 dpms toggle
+
+# -- Screenshots --
+
+bindsym --no-repeat Print exec $bin/grimshot --notify copy-save output
+bindsym --no-repeat $mod+Shift+s exec $bin/grimshot --notify copy area
+bindsym --no-repeat $mod+Shift+w exec $bin/grimshot --notify copy window
+
+# -- Rofi --
+
+bindsym $mod+Shift+e exec $bin/powermenu.sh
+bindsym $mod+g exec $bin/recorder.sh
+bindsym $mod+d exec $bin/launcher.sh
+bindsym $mod+period exec rofi -show emoji 
+
+# -- Misc --
+
+bindsym $mod+l exec loginctl lock-session
+
+# -- Apps --
+
+bindsym $mod+n exec nemo
+
+##-- Resize / Move -----------------------
 
 mode "Resize" {
 
-    # left will shrink the containers width
     bindsym Left resize shrink width 10px
-    # right will grow the containers width
     bindsym Down resize grow height 10px
-    # up will shrink the containers height
     bindsym Up resize shrink height 10px
-    # down will grow the containers height
     bindsym Right resize grow width 10px
     
     # Return to default mode
@@ -209,105 +211,62 @@ mode "Resize" {
     bindsym Escape mode "default"
 }
 
-# Use Resize mode
 bindsym $mod+r mode "Resize"
 
-# XF86 keys:
+mode "Move" {
 
-    # Volume control
-    bindsym --locked XF86AudioRaiseVolume exec pamixer -i 2
-    bindsym --locked XF86AudioLowerVolume exec pamixer -d 2
-    bindsym --locked XF86AudioMute exec pamixer -t
-    bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
-    
-    # Player control
-    bindsym --locked XF86AudioPlay exec playerctl --player=spotify play-pause
-    bindsym --locked XF86AudioPause exec playerctl --player=spotify play-pause
-    bindsym --locked XF86AudioNext exec playerctl --player=spotify next
-    bindsym --locked XF86AudioPrev exec playerctl --player=spotify previous
+    bindsym Left move left 20px
+    bindsym Down move down  20px
+    bindsym Up move up 20px
+    bindsym Right move right 20px
 
-    # Brightness control
-    bindsym --locked XF86MonBrightnessUp exec brightnessctl set +5% 
-    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 
-    # Custom player control (Laptop keyboard)
-    bindsym --locked XF86Explorer exec playerctl --player=spotify next
-    bindsym --locked XF86LaunchA exec playerctl --player=spotify play-pause
-    bindsym --locked XF86Search exec playerctl --player=spotify previous
-    bindsym --locked XF86Tools exec playerctl stop
+bindsym $mod+m mode "Move"
 
-    # Dpms toggle laptop screen
-    bindsym XF86Display output LVDS-1 dpms toggle
+##-- Window borders/Gaps -----------------
 
-# Screenshot
+gaps inner 6
+gaps outer 2
+default_border pixel 2
+default_floating_border pixel 2
 
-    bindsym --no-repeat Print exec $scripts/grimshot --notify copy-save output
-    bindsym --no-repeat $mod+Shift+s exec  $scripts/grimshot --notify copy area
-    bindsym --no-repeat $mod+Shift+w exec  $scripts/grimshot --notify copy window
+##-- Theme Settings ----------------------
 
-# Misc:
+seat seat0 xcursor_theme "Breeze_Snow" 16
+exec_always $bin/theme.sh
 
-    bindsym $mod+l exec loginctl lock-session
-    bindsym $mod+period exec rofi -show emoji 
-    bindsym $mod+n exec nemo
-    bindsym $mod+g exec $rofi/recorder.sh
-    
-### Status Bar:
+# -- Window Colors --                                              
+
+# class                     border      backgr.     text        indicator   child_border
+client.focused              '#81a1c1'   '#81a1c1'   '#eceff4'   '#8fbcbb'   '#81a1c1'
+client.unfocused            '#4c566a'   '#4c566a'   '#d8dee9'   '#4c566a'   '#4c566a'
+client.urgent               '#ebcb8b'   '#ebcb8b'   '#eceff4'   '#ebcb8b'   '#ebcb8b'
+client.focused_inactive     '#4c566a'   '#4c566a'   '#d8dee9'   '#4c566a'   '#4c566a'
+
+##-- Status Bar --------------------------
 
 bar {
     swaybar_command waybar
 }
 
-### Theme Settings
+##-- Autostart ---------------------------
 
-seat seat0 xcursor_theme "Breeze_Snow" 16
-exec_always ~/.config/sway/scripts/import-gsettings.sh
+exec $bin/autostart.sh
 
-# window colors           
-
-set $bg-color                   #81a1c1
-set $inactive-bg-color          #4c566a
-set $text-color                 #eceff4
-set $inactive-text-color        #d8dee9
-set $urgent-bg-color            #ebcb8b                                            
-
-# class                 		border                  background              text                    indicator               child_border
-client.focused          		$bg-color               $bg-color               $text-color             $bg-color               $bg-color
-client.unfocused        		$inactive-bg-color      $inactive-bg-color      $inactive-text-color    $inactive-bg-color      $inactive-bg-color
-client.focused_inactive 		$inactive-bg-color     	$inactive-bg-color      $inactive-text-color    $inactive-bg-color      $inactive-bg-color 
-client.urgent           		$urgent-bg-color        $urgent-bg-color        $text-color             $urgent-bg-color        $urgent-bg-color 
-#client.focused_tab_title $bg-color    	$inactive-bg-color      $inactive-text-color
-
-### Autostart applications 
-
-exec {
-    nm-applet --indicator
-    dunst
-    playerctld
-    blueman-applet
-    autotiling
-    flashfocus
-    xsettingsd
-    #discord --start-minimized ; for_window [class="discord"] move container to scratchpad
-    #keepassxc
-}
-
-# Gammastep
-exec {
-    /usr/lib/geoclue-2.0/demos/agent #Geoclue 
-    gammastep
-}
-
-### Specific apps setting
+##-- Window Rules ------------------------
 
 for_window [app_id="blueman-*"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 for_window [class="Lxappearance"] floating enable
 for_window [app_id="nemo"] floating enable
 for_window [app_id="nemo" title="Home"] floating disable
-for_window [class="Spotify"] move container to workspace 6
+for_window [class="Spotify"] move container to workspace 9
 for_window [app_id="imv"] border pixel 2
 
-## Intellij
+# -- Intellij --
 for_window [class="jetbrains-idea-ce" title="win0"] floating enable
 for_window [class="jetbrains-idea-ce" title="Welcome to IntelliJ IDEA"] floating enable
