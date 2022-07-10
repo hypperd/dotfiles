@@ -16,7 +16,7 @@ LOGOUT=""
 OPTIONS="$SHUTDOWN\n$REBOOT\n$LOCK\n$SUSPEND\n$LOGOUT"
 
 # SIGTERM rofi
-pkill rofi
+#pkill rofi
 
 CHOSEN="$(echo -e $OPTIONS | $ROFI_COMMAND -dmenu -selected-row 2)"
 

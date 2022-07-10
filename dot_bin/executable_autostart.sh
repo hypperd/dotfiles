@@ -1,21 +1,23 @@
 #!/bin/bash
-## Autostart Programs
 
+# -- Applets --
+nm-applet --indicator &
+blueman-applet &
+
+# -- Daemons --
 /usr/lib/geoclue-2.0/demos/agent > /dev/null 2>&1 & 
 gammastep &
-nm-applet --indicator &
 dunst &
-playerctld &
-blueman-applet &
-autotiling &
-flashfocus &
 xsettingsd &
+playerctld &
 eww daemon > /dev/null 2>&1 &
-spotify &
+thunar --daemon &
 
+# -- Sway --
+autotiling &
+#flashfocus &
 
-
-
-
-#discord --start-minimized ; for_window [class="discord"] move container to scratchpad
+# -- Apps --
+#discord --start-minimized 
 #keepassxc
+#spotify &
