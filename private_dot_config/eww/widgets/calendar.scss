@@ -1,0 +1,55 @@
+.cal-window {
+    border: 2px solid $nord1;
+    border-radius: 8px;
+    background-color: $background;
+    padding: 8px;
+
+    .cal-box {
+        font-size: 1em;
+        font-family: "JetBrains Mono";
+        
+        .cal-header {
+            font-weight: bold;
+            font-size: 18px;
+            padding: 0.25em;
+        }
+
+        .cal {
+            padding-left: 4px;
+        }
+    }
+}
+
+calendar {
+	font-style: normal;
+	font-weight: 800;
+	background-color: $background;
+	
+	&:selected {
+		border-radius: 5px;
+		color: $background;
+		background-color: $nord9;
+		font-weight: 900;
+	}
+
+	&.header {
+		font-weight: bold;
+	}
+	
+	&.button {
+		color: $nord9;
+	}
+	
+	&.highlight {
+		color: $nord14;
+		font-weight: bold;
+	}
+	
+	&:indeterminate {
+		color: $nord3;
+	}
+	
+	&:hover {
+		background-color: $nord1;
+	}
+}
