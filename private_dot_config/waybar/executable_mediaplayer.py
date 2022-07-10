@@ -5,6 +5,7 @@ import sys
 import signal
 import gi
 import json
+import os, time
 gi.require_version('Playerctl', '2.0')
 from gi.repository import Playerctl, GLib
 
@@ -15,6 +16,7 @@ def write_output(text, player):
     logger.info('Writing output')
 
     output = {'text': text,
+              'tooltip': text,
               'class': 'custom-' + player.props.player_name,
               'alt': player.props.player_name}
 
@@ -43,6 +45,14 @@ def on_metadata(player, metadata, manager):
 
     if player.props.status != 'Playing' and track_info:
         track_info = ' ' + track_info
+
+    # Restart program if track info is empty and player is spotify, this avoid waybar not show text in module
+    # Spotify bug?
+
+    if track_info == '' and player.props.player_name == 'spotify':
+        time.sleep(2)
+        os.execv(sys.argv[0], sys.argv)
+
     write_output(track_info, player)
 
 

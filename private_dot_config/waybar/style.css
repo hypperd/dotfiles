@@ -1,9 +1,17 @@
 * {
-  	border: none;
-  	font-family: JetBrains Mono Nerd Font;
+  	font-family: 'JetBrains Mono Nerd Font', monospace;
   	font-weight: normal;
   	font-size: 13px;
-  	min-height: 0px;
+}
+
+*:not(check):not(separator):not(menu):not(menuitem):not(arrow) {
+	min-height: unset;
+	/*border: none;*/
+}
+
+#tray menu * {
+	font-family: 'JetBrains Mono';
+	font-size: 10pt;
 }
 
 window#waybar {
@@ -13,27 +21,6 @@ window#waybar {
 	color: #d8dee9;
 	transition-property: background-color;
 	transition-duration: .5s;
-}
-
-tooltip {
-	padding: 3px;
-	border: 1px solid #3b4252;
-	border-radius: 0px;
-	box-shadow: none;
-	background: #2e3440;
-}
-
-tooltip label {
-	color: #d8dee9;
-	text-shadow: none;
-	font-family: 'Noto Sans Display';
-	font-size: 10pt;
-	font-weight: normal;
-}
-
-tooltip decoration {
-	border-radius: 0px;
-	box-shadow: none;
 }
 
 window#waybar.hidden {
@@ -59,9 +46,11 @@ window#waybar.hidden {
 }
 
 #custom-start {
-	padding: 0px 13px 0px 10px;
+	padding: 0px 18px 0px 14px;
 	margin: 2px 1px 5px 2px;
-	font-size: 16px; 
+	font-size: 16px;
+	color: #2e3440;
+	background-color: #81a1c1;
 }
 
 #workspaces button,
@@ -86,7 +75,8 @@ window#waybar.hidden {
 }
 
 #workspaces button.urgent {
-  	color: #bf616a;
+  	color: #2e3440;
+	background-color: #bf616a;
 }
 
 #cpu {
@@ -100,23 +90,22 @@ window#waybar.hidden {
 
 #clock {
 	margin: 2px 2px 5px 1px;
-	color: #81a1c1;
+	color: #2e3440;
+	background-color: #81a1c1;
 }
 
 #pulseaudio {
-	background-color: #81a1c1;
+	background-color: #b48ead;
 	color: #2e3440;
 }
 
 #pulseaudio.muted {
+	padding: 0px 12px 0px 10px;
 	background-color: #bf616a;
 	color: #2e3440;
 }
 
-#battery {
-  	color: #98c379;
-}
-
+#battery,
 #battery.charging, 
 #battery.plugged {
 	background-color: #a3be8c;
@@ -166,7 +155,7 @@ window#waybar.hidden {
   	padding: 0px;
 }
 
-#clock, #cpu, #battery:not(.charging), #workspaces button {
+#cpu, #workspaces button {
 	font-weight: 500;
 }
 
@@ -174,4 +163,9 @@ window#waybar.hidden {
 	font-family: monofur;
 	font-size: 16px;
 	font-weight: bold;
+}
+
+tooltip * {
+	/*font-family: 'Ubuntu';*/
+	/*border: 1px solid #4c566a;*/
 }

@@ -18,13 +18,6 @@ fi
 SLURP_CMD="slurp -b 00000064 -c 81a1c1 -s 00000000 -B d8dee926 -w 2"
 GRIM_CMD="grim -c -l 1"
 
-getTargetDirectory() {
-	if [ -f "$HOME/.config/user-dirs.dirs" ]; then
-		. "${XDG_CONFIG_HOME:-~/.config}/user-dirs.dirs"
-	fi
-  	echo "${XDG_SCREENSHOTS_DIR:-${XDG_PICTURES_DIR:-$HOME}}"
-}
-
 if [ "$1" = "--notify" ]; then
 	NOTIFY=yes
 	shift 1
@@ -34,7 +27,7 @@ fi
 
 ACTION=${1:-usage}
 SUBJECT=${2:-screen}
-FILE=${3:-$(getTargetDirectory)/$(date '+%d-%m-%Y %H:%M:%S').png}
+FILE=${3:-$(xdg-user-dir SCREENSHOTS)/$(date '+%d-%m-%Y %H:%M:%S').png}
 
 if [ "$ACTION" != "save" ] && [ "$ACTION" != "copy" ] && [ "$ACTION" != "check" ] && [ "$ACTION" != "copy-save" ]; then
 	echo "Usage:"
@@ -58,7 +51,7 @@ if [ "$ACTION" != "save" ] && [ "$ACTION" != "copy" ] && [ "$ACTION" != "check" 
 fi
 
 notify() {
-	notify-send -i /usr/share/icons/Papirus-Dark/64x64/devices/camera.svg -t 3000 -a grimshot "$@"
+	notify-send -t 3000 -a grimshot "$@"
 }
 
 notifyOk() {
@@ -68,7 +61,7 @@ notifyOk() {
 	if [ "$NOTIFY" = "no" ] ; then
 		echo "$TITLE: $MESSAGE" 
 	else
-		notify "$TITLE" "$MESSAGE"
+		notify -i camera "$TITLE" "$MESSAGE"
 	fi
 }
 

@@ -32,7 +32,13 @@ replace "$xsettingsd" "Net/ThemeName" "$(quotes "$gtk_theme")"
 replace "$xsettingsd" "Net/IconThemeName" "$(quotes "$icon_theme")"
 replace "$xsettingsd" "Gtk/CursorThemeName" "$(quotes "$cursor_theme")"
 
-killall -SIGHUP xsettingsd
+if [[ -z "$(pgrep xsettingsd)" ]]; then 
+  sleep 3
+fi
+
+if [[ -n "$(pgrep xsettingsd)" ]]; then
+  killall -SIGHUP xsettingsd
+fi
 
 font_name="$(cutValueConfig 'gtk-font-name')"
 

@@ -1,5 +1,8 @@
 #!/bin/bash
 
-# SIGTERM rofi if already running
-pkill rofi
-rofi -show drun -theme ~/.config/rofi/themes/launcher.rasi
+if [ -n "$(pgrep rofi)" ]; then
+    pkill rofi
+fi
+    swaymsg unbindsym '$mod+d'
+    rofi -show drun -theme ~/.config/rofi/themes/launcher.rasi -kb-cancel 'Super_L+d' -kb-cancel 'Escape'
+    swaymsg bindsym '$mod+d' exec '$bin/launcher.sh'

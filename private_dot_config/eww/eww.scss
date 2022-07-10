@@ -1,84 +1,24 @@
-// Global
-*{
-	all: unset;
+* {
+    all: unset;
 }
 
-// Color Variables
 $background: #2e3440;
 $foreground: #eceff4;
 $nord1: #3b4252;
+$nord2: #434c5e;
 $nord3: #4c566a;
-$nord7: #a3be8c;
-$nord10: #81a1c1;
+$nord7: #8fbcbb;
+$nord8: #88c0d0;
+$nord9: #81a1c1;
+$nord10: #5e81ac;
+$nord11: #bf616a;
+$nord12: #d08770;
+$nord13: #ebcb8b;
+$nord14: #a3be8c;
 
-//Calendar
-.cal-box {
-	border: 2px solid $nord1;
-	background-color: $background;
-	border-radius: 8px;
-	font-size: 1em;
-	font-family: "JetBrains Mono";
-	padding: 0.5em;
-
-	.cal-greeter {
-		font-style: italic;
-		font-weight: bold;
-		font-size: 18px;
-		padding: 0.25em;
-	}
-
-	.cal-inner-box {
-		.cal {
-			padding: 0px 5px;
-		}
-  	}
+window {
+    color: $foreground;
 }
 
-calendar {
-	padding: 1px;
-  	font-style: normal;
-	font-weight: 800;
-	color: $foreground;
-	background-color: $background;
-	
-	&:selected {
-		border-radius: 5px;
-		color: $background;
-		background-color: $nord10;
-		font-weight: 900;
-		
-	}
-
-	&.header {
-		color: $foreground;
-		font-weight: bold;
-	}
-	
-	&.button {
-		color: $nord10;
-	}
-	
-	&.highlight {
-		color: $nord7;
-		font-weight: bold;
-	}
-	
-	&:indeterminate {
-		color: $nord3;
-	}
-	
-	&:hover {
-		background-color: $nord1;
-	}
-}
-
-// .launchermenu-body {
-// 	background-color: $background;
-// 	border: 2px solid $nord1;
-// 	border-radius: 8px;
-
-// 	.profile-picture {
-// 		border-radius: 100%;
-// 		background-size: cover;
-// 	}
-// }
+@import "widgets/calendar.scss";
+@import "widgets/startmenu.scss";

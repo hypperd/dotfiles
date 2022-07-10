@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
 FILE="$(xdg-user-dir VIDEOS)/Recording/$(date '+%d-%m-%Y %H:%M:%S').mp4"
-AUDIO="$(pamixer --get-default-sink | awk ' NR==2 {print $2}' | sed 's/"//g').monitor"
+AUDIO="$(pactl get-default-sink).monitor"
 SLURP_CMD="slurp -b 00000064 -c 81a1c1 -s 00000000 -B d8dee926 -w 2"
 
 notify() {
     TITLE=${1:-"Recording"}
 	MESSAGE=${2:-"OK"}
-    notify-send -i /usr/share/icons/Papirus-Dark/64x64/apps/cs-screen.svg -t 3000 -a wf-recorder -u low "$TITLE" "$MESSAGE"
+    notify-send -i cs-screen -t 3000 -a wf-recorder -u low "$TITLE" "$MESSAGE"
 }
 
 startRecording() {
     CAPTURE=$1
     notify "Recording Started" "$(basename "$FILE")"
-    wf-recorder --audio="$AUDIO" -f "$FILE" --codec=h264_vaapi --device=/dev/dri/renderD128 --bframes=0 --force-yuv "$CAPTURE" > /dev/null 2>&1 &
+    wf-recorder --audio="$AUDIO" -f "$FILE" --codec=h264_vaapi --device=/dev/dri/renderD128 "$CAPTURE" > /dev/null 2>&1 &
     pkill -RTMIN+8 waybar
 }
 
@@ -33,8 +33,8 @@ case "$1" in
         ;;
 esac
 
-dir="$HOME/.config/rofi/themes/"
-ROFI_COMMAND="rofi -theme $dir/five.rasi"
+DIR="$HOME/.config/rofi/themes/"
+ROFI_COMMAND="rofi -theme $DIR/five.rasi"
 
 SCREEN=""
 AREA=""

@@ -1,4 +1,4 @@
- {
+{
     "layer": "top",
     "position": "bottom",
     "height": 34,
@@ -43,7 +43,8 @@
 
     "clock": {
         "format": "{:%H:%M} ",
-        "on-click": "eww open --screen 0 --toggle calendar > /dev/null"
+        "tooltip-format": "{:%d/%m/%Y} ",
+        "on-click": "eww-launcher calendar"
     },
 
     "cpu": {
@@ -53,19 +54,20 @@
     },
 
     "battery": {
+        "interval": 5,
         "states": {
             "warning": 30,
             "critical": 15
         },
         "format": "{capacity}% {icon}",
-        "format-charging": "{capacity}% ",
+        "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
         "format-icons": ["", "", "", "", ""]
     },
 
     "pulseaudio": {
         "format": "{volume}% {icon} {format_source}",
-        "format-muted": "{format_source} ﳌ",
+        "format-muted": " {format_source}",
         "format-source": "",
         "format-source-muted": "",
         "format-icons": {
@@ -78,7 +80,6 @@
     "custom/media": {
         "tooltip": true,
         "format": "{icon} {}",
-        "tooltip-format": "{}",
         "return-type": "json",
         "max-length": 25,
         "format-icons": {
@@ -110,7 +111,7 @@
     "custom/start": {
         "format": "",
         "tooltip": false,
-        "on-click": ""
+        "on-click": "eww-launcher startmenu"
     },
 
     "custom/wf-recorder": {
