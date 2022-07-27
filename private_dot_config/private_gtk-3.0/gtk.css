@@ -1,0 +1,16 @@
+* {
+	-ThunarAbstractIconView-row-spacing: 10;
+	-ThunarAbstractIconView-column-spacing: 10;
+}
+
+.thunar .standard-view .view {
+	padding: 5px 14px;
+}
+
+.thunar .sidebar .view {
+	padding-left: 0;
+}
+.thunar .sidebar .view:selected {
+	background-color: rgba(255,255,255,0.1);
+	border-left: 2px solid #6695a3;
+}

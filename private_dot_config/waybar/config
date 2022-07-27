@@ -2,7 +2,7 @@
     "layer": "top",
     "position": "bottom",
     "height": 34,
-    "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media", "custom/wf-recorder"],
+    "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media", "custom/recorder"],
     //Change "sway/window" to "wlr/taskbar" for more windows like taskbar 
     "modules-center": ["sway/window"],
     "modules-right": ["pulseaudio", "cpu", "battery", "tray", "clock"],
@@ -80,6 +80,7 @@
     "custom/media": {
         "tooltip": true,
         "format": "{icon} {}",
+        "tooltip-format": "{}",
         "return-type": "json",
         "max-length": 25,
         "format-icons": {
@@ -87,13 +88,12 @@
             "default": "🎜"
         },
         "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null",
+        "exec": "$HOME/.config/waybar/scripts/mediaplayer.py --player spotify 2> /dev/null",
         "on-click": "playerctl --player=spotify play-pause"
     },
 
-    /*
     //    Taskbar icons like Windows      
-    "wlr/taskbar": {
+    /*"wlr/taskbar": {
         "format": " {icon} ",
         "icon-size": 13,
         "icon-theme": "Papirus-Dark",
@@ -105,8 +105,7 @@
         "app_ids-mapping": {
             "jetbrains-idea-ce": "intellij"
         }
-    },
-    */
+    },*/
 
     "custom/start": {
         "format": "",
@@ -114,13 +113,11 @@
         "on-click": "eww-launcher startmenu"
     },
 
-    "custom/wf-recorder": {
+    "custom/recorder": {
 		"format": "{}",
 		"interval": "once",
 		"tooltip": false,
-        "exec": "echo ''",
-		"exec-if": "pgrep 'wf-recorder'",
-		"on-click": "~/.config/rofi/scripts/recorder.sh --stop",
+        "exec": "$HOME/.config/waybar/scripts/recorder-icon.sh",
 		"signal": 8
 	}
 }

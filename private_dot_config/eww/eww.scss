@@ -20,5 +20,12 @@ window {
     color: $foreground;
 }
 
+tooltip {
+    color: $foreground;
+    background-color: $background;
+    border-radius: 8px;
+    border: 1px solid $nord3;
+}
+
 @import "widgets/calendar.scss";
 @import "widgets/startmenu.scss";
