@@ -3,10 +3,6 @@ configuration {
     show-icons:             true;
     icon-theme:             "Papirus-Dark";       
     display-drun: 		    "";
-    timeout {
-        action: "kb-cancel";
-        delay:  10;
-    }
 }
 
 @theme "/dev/null"

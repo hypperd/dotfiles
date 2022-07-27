@@ -15,9 +15,10 @@ thunar --daemon &
 
 # -- Sway --
 autotiling &
-#flashfocus &
+wl-paste -t text --watch clipman store --no-persist & # clipboard
 
 # -- Apps --
-#discord --start-minimized 
+#discord-canary --enable-features=UseOzonePlatform \ 
+#  --ozone-platform=wayland --start-minimized 
 #keepassxc
 #spotify &

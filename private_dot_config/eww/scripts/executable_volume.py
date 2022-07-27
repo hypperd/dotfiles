@@ -4,11 +4,12 @@ import asyncio
 import signal
 import sys
 import pulsectl_asyncio
+import pulsectl
 import os
 from contextlib import suppress
 
 async def listen():
-    async with pulsectl_asyncio.PulseAsync('eww') as pulse:
+    async with pulsectl_asyncio.PulseAsync('eww volume monitor') as pulse:
         default_sink = await get_default_sink(pulse)
         default_source = await get_default_source(pulse)
 
@@ -21,11 +22,10 @@ async def listen():
                 continue
 
             match event.facility:
-                case 'sink_input':
+                case 'server':
+                    default_source = await get_default_source(pulse)
                     default_sink = await get_default_sink(pulse)
                     await write_volume_sink(pulse, default_sink.name)
-                case 'source_output':
-                    default_source = await get_default_source(pulse)
                     await write_volume_source(pulse, default_source.name)
                 case 'sink':
                     if event.index == default_sink.index:
@@ -53,7 +53,7 @@ async def write_volume_sink(pulse, name):
     global sink_volume_old
     if sink_volume_old != volume:
         sink_volume_old = volume
-        sys.stdout.write(str(round(volume * 100)) + '\n')
+        sys.stdout.write(f"{volume * 100}\n")
         sys.stdout.flush()
 
 async def write_volume_source(pulse, name):
@@ -64,25 +64,22 @@ async def write_volume_source(pulse, name):
     if source_volume_old != volume:
         source_volume_old = volume
         with open(fifo, 'w') as file:
-            file.write(str(round(volume * 100)) + '\n')
+            file.write(f"{volume * 100}\n")
             file.flush()
 
 
-async def main():
+async def main_task():
     # Run listen() coroutine in task to allow cancelling it
     listen_task = asyncio.create_task(listen())
 
     # register signal handlers to cancel listener when program is asked to terminate
     for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
         loop.add_signal_handler(sig, listen_task.cancel)
-    # Alternatively, the PulseAudio event subscription can be ended by breaking/returning from the `async for` loop
 
     with suppress(asyncio.CancelledError):
         await listen_task
 
-
-
-fifo = os.getenv('XDG_RUNTIME_DIR') + '/eww.pipe'
+fifo = f"{os.getenv('XDG_RUNTIME_DIR')}/eww.pipe"
 if not os.path.exists(fifo):
     os.mkfifo(fifo)
 
@@ -90,4 +87,4 @@ source_volume_old = None
 sink_volume_old = None
 # Run event loop until main_task finishes
 loop = asyncio.new_event_loop()
-loop.run_until_complete(main())
+loop.run_until_complete(main_task())

@@ -35,7 +35,7 @@ window#waybar.hidden {
 #clock,
 #pulseaudio,
 #battery,
-#custom-wf-recorder,
+#custom-recorder,
 #tray {
 	padding: 0px 10px;
 	background-color: #3b4252 ;
@@ -47,7 +47,7 @@ window#waybar.hidden {
 
 #custom-start {
 	padding: 0px 18px 0px 14px;
-	margin: 2px 1px 5px 2px;
+	margin-left: 2px;
 	font-size: 16px;
 	color: #2e3440;
 	background-color: #81a1c1;
@@ -89,7 +89,7 @@ window#waybar.hidden {
 }
 
 #clock {
-	margin: 2px 2px 5px 1px;
+	margin-right: 2px;
 	color: #2e3440;
 	background-color: #81a1c1;
 }
@@ -149,7 +149,7 @@ window#waybar.hidden {
 }
 */
 
-#custom-wf-recorder {
+#custom-recorder {
   	color: #bf616a;
   	background-color: #2e3440;
   	padding: 0px;
@@ -163,9 +163,4 @@ window#waybar.hidden {
 	font-family: monofur;
 	font-size: 16px;
 	font-weight: bold;
-}
-
-tooltip * {
-	/*font-family: 'Ubuntu';*/
-	/*border: 1px solid #4c566a;*/
 }

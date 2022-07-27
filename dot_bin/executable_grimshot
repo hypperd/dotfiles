@@ -137,7 +137,7 @@ case "$ACTION" in
 	notifyOk "$WHAT copied to buffer"
 	;;
 "copy-save")
-	if takeScreenshot - "$GEOM" "$OUTPUT" | tee "$FILE" | wl-copy --type image/png || die "Clipboard error"; then
+	if takeScreenshot - "$GEOM" "$OUTPUT" | tee "$FILE" | wl-copy --type image/png; then
 		TITLE="Screenshot of $SUBJECT"
 		MESSAGE=$(basename "$FILE")
 		notifyOk "$MESSAGE" "$TITLE"

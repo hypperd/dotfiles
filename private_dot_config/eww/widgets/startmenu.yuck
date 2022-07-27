@@ -3,35 +3,32 @@
 (defpoll profile_name :interval "10h" "whoami")
 
 ;; system info variables
-(deflisten mic "tail -f test")
+(deflisten mic "scripts/system-info.sh mic")
 (deflisten volume "scripts/volume.py")
 (deflisten brightness "scripts/system-info.sh brightness")
 (defpoll memory :interval "2s" "free | awk 'NR==2 {print $3 / $2 * 100}'")
 
+;; scale variables
 (defvar hover_sink false)           ;; NOTE: variables for workaround this bug:
 (defvar hover_mic false)            ;; https://github.com/elkowar/eww/issues/482
 (defvar hover_brightness false)     ;; preventing scale flickering on changes
 
 ;; player variables
-(defpoll music_position :interval "1s" "scripts/music.sh")
-(deflisten player_json "python3 scripts/mediaplayer.py --player spotify")
+(defvar poll_position true)
+(defpoll music_position :run-while {poll_position} :interval "1s" 
+    "scripts/system-info.sh music-position"
+)
+(deflisten player_json "scripts/mediaplayer.py --player spotify")
+
             
 ;; system buttons
-(defvar dunst_paused "false")
+(defvar dunst_paused false)
+(defvar idle_inhibitor false)
 
 (defwidget startmenu[]
-    (box
-        :class "startmenu-window"
-        ;:space-evenly false
-        (box
-            :class "startmenu-box"
-            :space-evenly false
-            :orientation "v"
-            :spacing 8
-            (box
-                :orientation "v"
-                :class "startmenu-profile"
-                :space-evenly false
+    (box :class "startmenu-window" :space-evenly true :orientation "h"
+        (box :class "startmenu-box" :space-evenly false :orientation "v" :spacing 8
+            (box :orientation "v" :class "startmenu-profile" :space-evenly false
                 (box
                     :halign "center"
                     :space-evenly false
@@ -45,58 +42,34 @@
                     :text profile_name
                 )
             )
-            (box 
-                :class "system-info"
-                :orientation "v"
-                (box
-                    :spacing 8
-                    :class "mic-bar"
-                    :orientation "h"
-                    :space-evenly false
-                    (label
-                        :class "mic-icon"
-                        :text "mic"
-                    )
+            (box :class "system-info" :orientation "v" :space-evenly false
+                (box :spacing 8 :class "mic-bar" :orientation "h" :space-evenly false
+                    (label :class "mic-icon" :text "mic")
                     (eventbox
                         :onhover "eww update hover_mic=true" 
                         :onhoverlost "eww update hover_mic=false"
                         :hexpand true
                         (scale
                             :class "mic-slider"
-                            :hexpand true
-                            :onchange { hover_mic ? "pamixer --default-source --set-volume $(printf '%.0f' {})" : ""}
+                            :onchange { hover_mic ? "pactl set-source-volume @DEFAULT_SOURCE@ {}%" : ""}
                             :value { hover_mic ? "" : mic }
-                            :max 101
                         )
                     )
                 )
-                (box
-                    :class "volume-bar"
-                    :orientation "h"
-                    :space-evenly false
-                    :spacing 8
-                    (label
-                        :class "volume-icon"
-                        :text "volume_up"
-                    )
+                (box :class "volume-bar" :orientation "h" :space-evenly false :spacing 8
+                    (label :class "volume-icon" :text "volume_up")
                     (eventbox 
                         :onhover "eww update hover_sink=true" 
                         :onhoverlost "eww update hover_sink=false"
                         :hexpand true
                         (scale
                             :class "volume-slider"
-                            :hexpand true
-                            :onchange { hover_sink ? "pamixer --set-volume $(printf '%.0f' {})" : "" }
+                            :onchange { hover_sink ? "pactl set-sink-volume @DEFAULT_SINK@ {}%" : "" }
                             :value { hover_sink ? "" : volume }
-                            :max 101
                         )
                     )
                 )
-                (box
-                    :class "brightness-bar"
-                    :orientation "h"
-                    :space-evenly false
-                    :spacing 8
+                (box :class "brightness-bar" :orientation "h" :space-evenly false :spacing 8
                     (label :class "brightness-icon" :text "brightness_high")
                     (eventbox
                         :onhover "eww update hover_brightness=true" 
@@ -106,188 +79,93 @@
                             :class "brightness-slider"
                             :value { hover_brightness ? "" : brightness }
                             :onchange {hover_brightness ? "brightnessctl set {}%" : ""}
-                            :max 100
-                        
                         )
                     )
                 )
-                (box
-                    :class "ram-bar"
-                    :orientation "h"
-                    :space-evenly false
-                    :spacing 8
-                    (label
-                        :class "ram-icon"
-                        :text "memory"
-                    )
+                (box :class "ram-bar" :orientation "h" :space-evenly false :spacing 8
+                    (label :class "ram-icon" :text "memory")
                     (scale
                         :active false
                         :class "ram-slider"
                         :hexpand true
                         :value memory
-                    
                     )
                 )
             )
-            (box 
-                :class "music-player" 
-                :orientation "h" 
-                :space-evenly false
-                :spacing 8
-                (box 
+            (box :class "music-player" :orientation "h" :space-evenly false :vexpand true
+                (box
+                    :space-evenly false
                     :class "song-art" 
                     :orientation "v" 
-                    :style "background-image: url('${player_json == "" ? 'assets/music_fallback.png' : '${player_json.art}'}')"
                     :hexpand true
-                    (box 
-                        :class "music-info" 
-                        :orientation "v" 
-                        :space-evenly false
-                        (label 
-                            :class "now-playing" 
-                            :halign "start" 
-                            :text "Now Playing:")
+                    :style "background-image: url('${player_json.art == "" ? 'assets/music_fallback.png' : '${player_json.art}'}')"
+                    (box :class "music-info" :orientation "v" :space-evenly false :vexpand true
+                        (label :class "now-playing" :halign "start" :text "Now Playing:")
                         (label 
                             :class "song-title" 
                             :halign "start"
-                            :text {player_json == "" ? "Nothing playing" : player_json.title}
+                            :text {player_json.title == "" ? "Nothing" : player_json.title}
                             :limit-width 23
                         )
-                        (label 
-                            :class "song-artist" 
+                        (label
                             :halign "start"
-                            :text {player_json == "" ? "" : "by ${player_json.artist}"}
+                            :class "song-artist"
+                            :text {player_json.artist == "" ? "by Unknown Artist" : "by ${player_json.artist}"}
                             :limit-width 35
                         )
-                        
                         (label 
                             :class "song-position" 
                             :halign "start"
-                            :text "${music_position}/${player_json.duration}"
+                            :valign "end"
+                            :vexpand true
+                            :text { player_json.duration == "" ? "--:-- / --:--" : "${music_position}/${player_json.duration}"}
                         )
                     )
                 )
-                (box 
-                    :class "song-controls" 
-                    :orientation "v" 
-                    ;:spacing 8
-                    (button :onclick "playerctl previous" "")
+                (box :class "song-controls" :orientation "v" :space-evenly true
+                    (button :onclick "playerctl previous --player spotify" "")
                     (button 
-                        :class "play-pause" 
-                        :onclick "playerctl play-pause"
+                        :class "play-pause"
+                        :onclick "playerctl play-pause --player spotify"
                         {player_json == "" ? "" : player_json.status == "playing" ? "" : ""}
                     )
-                    (button :onclick "playerctl next" "")
+                    (button :onclick "playerctl next --player spotify" "")
                 )
             )
-            (box
-                :spacing 8
-                :class "system-btn"
-                :orientation "h"
+            (box :spacing 8 :class "system-btn" :orientation "h"
                 (button
+                    :class "system-btn-off"
                     "wifi"
                 )
                 (button
                     :onclick "scripts/dunst.sh"
-                    :style {dunst_paused ? "background-color: #81a1c1" : ""}
+                    :class {dunst_paused ? "system-btn-off" : "system-btn-on"}
                     {dunst_paused ? "notifications_off" : "notifications_active"}
                 )
                 (button
+                    :class "system-btn-off"
                     "bluetooth"
                 )
                 (button
-                    ""
+                    :class {idle_inhibitor ? "system-btn-on" : "system-btn-off"}
+                    :onclick "scripts/idle-inhibitor.sh toggle"
+                    :tooltip "Idle Inhibitor"
+                    {idle_inhibitor ? "flash_on" : "flash_off"}
                 )
             )
         )
     )
 )
 
-
 (defwindow startmenu
 	:geometry
 		(geometry
 			:x "6px"
             :y "6px"
-			:width "380px" 
-			;:height "600px"
+			:width "370px" 
+			:height "575px"
 			:anchor "left bottom"
 		)
 	:stacking "fg"
-	(startmenu)
-
-
-        
+	(startmenu)      
 )
-
-
-; (defwidget player[]
-;     (box
-;         :class "music-window"
-;         (box
-;             :class "music-art-box"
-;             :orientation "v"
-;             ;:space-evenly false
-;             :style "background-image: url('assets/art.jpg')"
-;             :width 400
-;             :height 250
-;             (box
-;                 :halign "start"
-;                 ;:valign "fill"
-;                 :class "music-info"
-;                 :orientation "v"
-;                 :space-evenly false
-;                 ;:hexpand true
-;                 ;:vexpand true
-;                 (label
-;                     :class "music-title"
-;                     :text "Kill Aura"
-;                 )
-;                 (label
-;                     :class "music-artist"
-;                     :text "by Geoxor"
-;                 )
-;             )
-;             (box
-;                 :valign "end"
-;                 :class "music-controls-box"
-;                 :space-evenly false
-;                 :orientation "v"
-;                 ;;:halign "fill"
-;                 (scale
-;                     :class "position-bar"
-;                     :hexpand true
-;                     :value 50
-;                 )
-;                 (box 
-;                     :orientation "h"
-;                     (button
-;                         "skip_previous"
-;                     )
-;                     (button
-;                         "play_arrow"
-;                     )
-;                     (button
-;                         "skip_next"
-;                     )
-;                 )
-;             )
-;         )
-;     )
-    
-
-; )
-
-
-; (defwindow player
-;     :geometry
-;         (geometry
-;             :x "150px"
-;             :y "6px"
-;             :width "300px" 
-;             :height "230px"
-;             :anchor "left bottom"
-;         )
-;     :stacking "fg"
-;     (player)
-; )

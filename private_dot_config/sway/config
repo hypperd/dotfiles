@@ -20,7 +20,7 @@ output LVDS-1 {
 	scale 1
 }
 
-exec_always 'pkill kanshi; exec kanshi'
+#exec_always 'pkill kanshi; exec kanshi'
 
 # -- Wallpaper --
 
@@ -194,9 +194,11 @@ bindsym --no-repeat $mod+Shift+w exec $bin/grimshot --notify copy window
 
 # -- Rofi --
 
-bindsym $mod+Shift+e exec $bin/powermenu.sh
-bindsym $mod+g exec $bin/recorder.sh
-bindsym $mod+d exec $bin/launcher.sh
+set $rofi "~/.config/rofi/scripts"
+
+bindsym $mod+Shift+e exec $rofi/powermenu.sh
+bindsym $mod+g exec $rofi/recorder.sh
+bindsym $mod+d exec $rofi/launcher.sh
 bindsym $mod+period exec rofi -show emoji 
 
 # -- Misc --
@@ -206,7 +208,7 @@ bindsym $mod+l exec loginctl lock-session
 # -- Apps --
 
 bindsym $mod+e exec thunar
-bindsym $mod+n exec eww-launcher notification-center
+bindsym $mod+s exec eww-launcher startmenu
 
 ##-- Resize / Move -----------------------
 
