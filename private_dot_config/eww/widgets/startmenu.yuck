@@ -18,9 +18,10 @@
 (defpoll music_position :run-while {poll_position} :interval "1s" 
     "scripts/system-info.sh music-position"
 )
-(deflisten player_json "scripts/mediaplayer.py --player spotify")
-
-            
+(deflisten player_json 
+    :initial '{"title": "", "artist": "", "duration": "", "art": "", "status": ""}'
+    "scripts/mediaplayer.py --player spotify"
+)
 ;; system buttons
 (defvar dunst_paused false)
 (defvar idle_inhibitor false)
@@ -78,7 +79,7 @@
                         (scale
                             :class "brightness-slider"
                             :value { hover_brightness ? "" : brightness }
-                            :onchange {hover_brightness ? "brightnessctl set {}%" : ""}
+                            :onchange {hover_brightness ? "brightnessctl -q set {}%" : ""}
                         )
                     )
                 )
@@ -127,7 +128,7 @@
                     (button 
                         :class "play-pause"
                         :onclick "playerctl play-pause --player spotify"
-                        {player_json == "" ? "" : player_json.status == "playing" ? "" : ""}
+                        {player_json.status == "playing" ? "" : ""}
                     )
                     (button :onclick "playerctl next --player spotify" "")
                 )
@@ -143,6 +144,7 @@
                     {dunst_paused ? "notifications_off" : "notifications_active"}
                 )
                 (button
+                    :onclick "scripts/jellyfin.sh toggle"
                     :class "system-btn-off"
                     "bluetooth"
                 )
