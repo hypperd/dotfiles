@@ -4,9 +4,12 @@ Repository for storage my configuration files of my linux installation.
 
 ### Details
 
-* **Distro:** Arch Linux (btw)
-* **WM:** [sway](https://github.com/swaywm/sway)
-* **Status bar:** [waybar](https://github.com/Alexays/Waybar)
+* **distro:** Arch Linux (btw)
+* **wayland Compositor:** [sway](https://github.com/swaywm/sway)
+* **status bar:** [waybar](https://github.com/Alexays/Waybar)
+* **widgets:** [eww](https://github.com/elkowar/eww)
+* **terminal:** kitty
+* **shell:** zsh
 
 ### Screenshot
 
