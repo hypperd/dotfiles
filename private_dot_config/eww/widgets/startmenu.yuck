@@ -25,6 +25,8 @@
 ;; system buttons
 (defvar dunst_paused false)
 (defvar idle_inhibitor false)
+(defvar night_light true)
+(defvar server false)
 
 (defwidget startmenu[]
     (box :class "startmenu-window" :space-evenly true :orientation "h"
@@ -135,18 +137,20 @@
             )
             (box :spacing 8 :class "system-btn" :orientation "h"
                 (button
-                    :class "system-btn-off"
-                    "wifi"
-                )
-                (button
                     :onclick "scripts/dunst.sh"
                     :class {dunst_paused ? "system-btn-off" : "system-btn-on"}
                     {dunst_paused ? "notifications_off" : "notifications_active"}
                 )
                 (button
-                    :onclick "scripts/jellyfin.sh toggle"
-                    :class "system-btn-off"
-                    "bluetooth"
+                    :class {server ? "system-btn-on" : "system-btn-off"}
+                    :onclick "scripts/jellyfin.sh toggle &"
+                    "storage"
+                )
+                (button
+                    :onclick "scripts/night-light.sh"
+                    :class {night_light ? "system-btn-on" : "system-btn-off"}
+                    ""
+                    ;; ｜ 
                 )
                 (button
                     :class {idle_inhibitor ? "system-btn-on" : "system-btn-off"}
@@ -165,7 +169,7 @@
 			:x "6px"
             :y "6px"
 			:width "370px" 
-			:height "575px"
+			:height "571px"
 			:anchor "left bottom"
 		)
 	:stacking "fg"

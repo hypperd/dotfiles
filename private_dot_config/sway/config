@@ -289,4 +289,4 @@ for_window [title="Save File"] floating enable
 for_window [title="Select Font"] floating enable
 
 # -- Intellij --
-for_window [class="jetbrains-idea-ce" title="^\s$"] floating enable
+for_window [class="jetbrains-idea" title="splash"] floating enable

@@ -36,6 +36,8 @@ window#waybar.hidden {
 #pulseaudio,
 #battery,
 #custom-recorder,
+#custom-scratchpad-indicator,
+#custom-pacman,
 #tray {
 	padding: 0px 10px;
 	background-color: #3b4252 ;
@@ -151,11 +153,25 @@ window#waybar.hidden {
 
 #custom-recorder {
   	color: #bf616a;
-  	background-color: #2e3440;
+  	background-color: transparent;
   	padding: 0px;
 }
 
+#custom-scratchpad-indicator {
+	color: #81a1c1;
+	font-weight: 500;
+	padding: 0px 2px;
+	background-color: transparent;
+}
+
 #cpu, #workspaces button {
+	font-weight: 500;
+}
+
+#custom-pacman {
+	color: #bf616a;
+	padding: 0px 2px;
+	background-color: transparent;
 	font-weight: 500;
 }
 

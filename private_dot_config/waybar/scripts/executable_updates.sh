@@ -5,4 +5,6 @@ while pgrep checkupdates > /dev/null; do
 done
 
 num=$(checkupdates | wc -l)
-echo "$num"
+# num=2 # mock
+tooltip="$num Updates"
+echo -e "$num\n$tooltip"

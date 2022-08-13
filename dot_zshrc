@@ -121,3 +121,7 @@ autoload -U compinit; compinit
 
 clear
 
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
+

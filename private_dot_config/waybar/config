@@ -5,7 +5,7 @@
     "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media", "custom/recorder"],
     //Change "sway/window" to "wlr/taskbar" for more windows like taskbar 
     "modules-center": ["sway/window"],
-    "modules-right": ["pulseaudio", "cpu", "battery", "tray", "clock"],
+    "modules-right": ["custom/pacman" ,"custom/scratchpad-indicator","pulseaudio", "cpu", "battery", "tray", "clock"],
 
     "sway/window": {
         "format": "{app_id}",
@@ -119,5 +119,25 @@
 		"tooltip": false,
         "exec": "$HOME/.config/waybar/scripts/recorder-icon.sh",
 		"signal": 8
-	}
+	},
+
+    "custom/scratchpad-indicator": {
+        "format": "缾 {}",
+        "return-type": "json",
+        "escape": true,
+        // "interval": 3,
+        "exec": "$HOME/.config/waybar/scripts/scratchpad.py 2> /dev/null"
+        // "exec-if": "exit 0",
+        // "on-click": "swaymsg 'scratchpad show'",
+        // "on-click-right": "swaymsg 'move scratchpad'"
+    },
+
+    "custom/pacman": {
+        "format": " {}",
+        "interval": 3600,                     // every hour
+        "exec": "$HOME/.config/waybar/scripts/updates.sh 2> /dev/null",       // # of updates
+        "exec-if": "exit 0",                  // always run; consider advanced run conditions
+        "on-click": "pkill -SIGRTMIN+6 waybar", // update system
+        "signal": 6
+    }
 }
