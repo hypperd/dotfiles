@@ -8,22 +8,21 @@ import json
 def output_write(ipc):
     scratchpad = ipc.get_tree().scratchpad()
     window_list = scratchpad.floating_nodes
-
     num = len(window_list)
 
-    if num > 0:
-
-        output = {
-            'text': f"{num}",
-            'tooltip': f"Scratchpad: {num} windows"
-        }
-        
-        sys.stdout.write(f"{json.dumps(output)}\n")
-        sys.stdout.flush()
-    else:
+    if num == 0:
         sys.stdout.write("\n")
         sys.stdout.flush()
+        return
 
+    output = {
+        'text': f"{num}",
+        'tooltip': f"Scratchpad: {num} windows"
+    }
+    
+    sys.stdout.write(f"{json.dumps(output)}\n")
+    sys.stdout.flush()
+        
 def signal_handler(ipc):
     sys.stdout.write('\n')
     sys.stdout.flush()
@@ -31,7 +30,6 @@ def signal_handler(ipc):
     sys.exit(0)
 
 def main():
-
     ipc = i3ipc.Connection()
     output_write(ipc)
 

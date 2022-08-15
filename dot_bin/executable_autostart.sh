@@ -17,7 +17,7 @@ thunar --daemon &
 # -- Sway --
 autotiling &
 wl-paste -t text --watch clipman store --no-persist & # clipboard
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 # polkit
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & # polkit
 
 # -- Apps --
 #discord-canary --enable-features=UseOzonePlatform \ 

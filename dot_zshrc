@@ -112,6 +112,7 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 
 alias ls="exa --icons"
+# alias pacman="update"
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 autoload -U compinit; compinit

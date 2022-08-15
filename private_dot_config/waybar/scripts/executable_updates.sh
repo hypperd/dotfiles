@@ -1,10 +1,24 @@
 #!/bin/bash
 
-while pgrep checkupdates > /dev/null; do
+# Multi monitor fix
+while pgrep -f checkupdates > /dev/null; do
     sleep 0.5
 done
 
-num=$(checkupdates | wc -l)
-# num=2 # mock
-tooltip="$num Updates"
-echo -e "$num\n$tooltip"
+
+if ! updates_arch=$(checkupdates | wc -l); then
+    updates_arch=0
+fi
+
+if ! updates_aur=$(yay --aur -Qum --devel | wc -l); then
+    updates_aur=0
+fi
+
+num=$((updates_arch + updates_aur))
+
+if [[ ! num -eq 0 ]]; then
+    tooltip="$num Updates"
+    echo -e "$num\n$tooltip"
+else
+    echo
+fi
