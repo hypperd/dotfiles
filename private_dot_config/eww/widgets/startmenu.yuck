@@ -8,11 +8,6 @@
 (deflisten brightness "scripts/system-info.sh brightness")
 (defpoll memory :interval "2s" "free | awk 'NR==2 {print $3 / $2 * 100}'")
 
-;; scale variables
-(defvar hover_sink false)           ;; NOTE: variables for workaround this bug:
-(defvar hover_mic false)            ;; https://github.com/elkowar/eww/issues/482
-(defvar hover_brightness false)     ;; preventing scale flickering on changes
-
 ;; player variables
 (defvar poll_position true)
 (defpoll music_position :run-while {poll_position} :interval "1s" 
@@ -48,42 +43,31 @@
             (box :class "system-info" :orientation "v" :space-evenly false
                 (box :spacing 8 :class "mic-bar" :orientation "h" :space-evenly false
                     (label :class "mic-icon" :text "mic")
-                    (eventbox
-                        :onhover "eww update hover_mic=true" 
-                        :onhoverlost "eww update hover_mic=false"
+                    (scale
+                        :class "mic-slider"
+                        :onchange "pactl set-source-volume @DEFAULT_SOURCE@ {}%"
+                        :value {mic}
                         :hexpand true
-                        (scale
-                            :class "mic-slider"
-                            :onchange { hover_mic ? "pactl set-source-volume @DEFAULT_SOURCE@ {}%" : ""}
-                            :value { hover_mic ? "" : mic }
-                        )
-                    )
+                    ) 
                 )
                 (box :class "volume-bar" :orientation "h" :space-evenly false :spacing 8
                     (label :class "volume-icon" :text "volume_up")
-                    (eventbox 
-                        :onhover "eww update hover_sink=true" 
-                        :onhoverlost "eww update hover_sink=false"
+                    (scale
+                        :class "volume-slider"
+                        :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%"
+                        :round-digits 2
+                        :value {volume}
                         :hexpand true
-                        (scale
-                            :class "volume-slider"
-                            :onchange { hover_sink ? "pactl set-sink-volume @DEFAULT_SINK@ {}%" : "" }
-                            :value { hover_sink ? "" : volume }
-                        )
                     )
                 )
                 (box :class "brightness-bar" :orientation "h" :space-evenly false :spacing 8
                     (label :class "brightness-icon" :text "brightness_high")
-                    (eventbox
-                        :onhover "eww update hover_brightness=true" 
-                        :onhoverlost "eww update hover_brightness=false"
+                    (scale
+                        :class "brightness-slider"
+                        :onchange "brightnessctl -q set {}%"
+                        :value {brightness}
                         :hexpand true
-                        (scale
-                            :class "brightness-slider"
-                            :value { hover_brightness ? "" : brightness }
-                            :onchange {hover_brightness ? "brightnessctl -q set {}%" : ""}
-                        )
-                    )
+                    )   
                 )
                 (box :class "ram-bar" :orientation "h" :space-evenly false :spacing 8
                     (label :class "ram-icon" :text "memory")
@@ -91,7 +75,7 @@
                         :active false
                         :class "ram-slider"
                         :hexpand true
-                        :value memory
+                        :value {memory}
                     )
                 )
             )
