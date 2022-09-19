@@ -1,0 +1,49 @@
+#!/bin/bash
+
+function error() {
+    echo -e "\033[0;31mError:\033[0m $1"
+}
+
+function kill_swaybg() {
+    pidof -q swaybg && pkill swaybg
+}
+
+config="${XDG_CONFIG_HOME:-$HOME/.config}/wallpaper.json"
+
+if [[ ! -f $config ]]; then
+    error "config not found"
+    exit 1
+fi
+
+cmd="$1"
+shift
+
+case "$cmd" in
+    "restore")
+        image=$(jq -r '.path' "$config")
+        kill_swaybg
+        swaybg -o '*' -m fill -i "$image" &
+    ;;
+    "set")
+        path="$1"
+        
+        if [[ -z $path ]]; then
+            error "invalid path '$path'"
+            exit 1
+        fi
+
+        kill_swaybg
+        swaybg -o '*' -m fill -i "$path" &
+        output=$(jq --arg path "$path" '.path = $path' "$config")
+        
+        echo -E "$output" > "$config"
+    ;;
+    "get")
+        image=$(jq -r '.path' "$config")
+        echo "$image"
+    ;;
+    *)
+        error "invalid command '$cmd'"
+        exit 1
+    ;;
+esac
