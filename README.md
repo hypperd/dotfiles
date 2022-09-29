@@ -13,4 +13,4 @@ Repository for storage my configuration files of my linux installation.
 
 ### Screenshot
 
-![image](./screen.gif)
+![image](./screen.png)
