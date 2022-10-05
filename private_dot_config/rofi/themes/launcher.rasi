@@ -44,9 +44,9 @@ listview {
 }
 
 element {
-    padding:                1% 1.5% 1% 1.5%;
+    padding:                8px;
     cursor:  pointer;
-    spacing: 5px ;
+    spacing: 8px;
     border:  0;
 }
 
