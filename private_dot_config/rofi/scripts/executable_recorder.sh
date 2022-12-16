@@ -1,95 +1,149 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-LOCK_FILE="/tmp/waybar-rec.lock"
-FILE="$(xdg-user-dir VIDEOS)/Recording/$(date '+%d-%m-%Y %H:%M:%S').mp4"
-AUDIO="$(pactl get-default-sink).monitor"
-SLURP_CMD="slurp -b 00000064 -c 81a1c1 -s 00000000 -B d8dee926 -w 2"
+# Requirements:
+#   - xdg-user-dirs.
+#   - wf-recorder
+#   - jq
 
-notify() {
+set -eo pipefail
+
+lock_file="/tmp/waybar-rec.lock"
+file_path="$(xdg-user-dir VIDEOS)/Recording"
+
+function notify() {
     notify-send -t 3000 -a wf-recorder "$@"
 }
 
-notifyOk() {
-    TITLE=${1:-"Recording"}
-	MESSAGE=${2:-"OK"}
-    notify -i cs-screen -u low "$TITLE" "$MESSAGE"
+function notifyOk() {
+    title=${1:-"Recording"}
+	message=${2:-"OK"}
+    notify -i cs-screen -u low "$title" "$message"
 }
 
-notifyError() {
-    TITLE=${1:-"Recording Error"}
-	MESSAGE=${2:-"Error"}
-	notify -u critical "$TITLE" "$MESSAGE"
+function notifyError() {
+    title=${1:-"Recording Error"}
+	message=${2:-"Error"}
+	notify -u critical "$title" "$message"
 }
 
-waybar-icon() {
-    if [[ ! -f $LOCK_FILE ]]; then
-        touch $LOCK_FILE
+function waybar-icon() {
+    if [[ ! -f $lock_file ]]; then
+        touch $lock_file
     else
-        rm $LOCK_FILE
+        rm $lock_file
     fi
     pkill -RTMIN+8 waybar
 }
 
-startRecording() {
-    CAPTURE=$1
-    wf-recorder --audio="$AUDIO" -f "$FILE" --codec=h264_vaapi --device=/dev/dri/renderD128 "$CAPTURE" > /dev/null 2>&1 &
-    notifyOk "Recording Started" "$(basename "$FILE")"
+function start_recording() {
+    capture=$1
+    file="$file_path/$(date '+%d-%m-%Y %H%M%S').mp4"
+
+    params=(--codec=h264_vaapi --device=/dev/dri/renderD128 -f "$file")
+    params+=("$capture")
+
+    [[ ! $audio_rec == true ]] && \
+        params+=(--audio="$(pactl get-default-sink).monitor")
+    
+    wf-recorder "${params[@]}" || \
+        notifyError "Error on capturing screen" "Error in wf-recorder" &
+    notifyOk "Recording Started" "${file##*/}"
     waybar-icon
 }
 
-stopRecording() {
-    pkill -SIGINT wf-recorder || notifyError "Unable to stop wf-recorder" "Error on capturing screen"
-    notifyOk "Recording Complete" "$(basename "$FILE")"
+function stop_recording() {
+    pkill -SIGINT wf-recorder || notifyError "Unable to stop wf-recorder" \
+        "Error on capturing screen"
+    
+    # shellcheck disable=SC2012
+    notifyOk "Recording Complete" \
+        "$(ls "$file_path" -Art | tail -1)"
     waybar-icon
 }
 
-DIR="$HOME/.config/rofi/themes/"
-ROFI_COMMAND="rofi -theme $DIR/menu.rasi"
+function slurp_cmd() {
+    slurp -b 00000064 -c 81a1c1 -s 00000000 -B d8dee926 -w 2
+}
 
-SCREEN=""
-AREA=""
-WINDOW=""
-STATUS="-u 0"
-STATE=""
+screen=""
+area=""
+window=""
 
-if ! pgrep wf-recorder > /dev/null; then
-    STATUS="-a 0"
-    STATE=""
+declare -A audio_opt=([on]="" [off]="")
+declare -A state_opt=([on]="" [off]="")
+
+pid=$(pidof wf-recorder) || true
+
+if [[ -n $pid ]]; then
+    echo -en "\0theme\x1fprompt { background-color: @urgent;}\n"
+    state="${state_opt[on]}"
+    info="$(ps --pid="$pid" -o args --no-headers)"
+else
+    echo -en "\0theme\x1fprompt {background-color: @active;}\n"
+    state="${state_opt[off]}"
 fi
 
-OPTIONS="$STATE\n$SCREEN\n$AREA\n$WINDOW"
+if [[ $ROFI_DATA == false || $info = *"audio"* ]]; then
+    echo -en "\0active\x1f3\n"
+    echo -en "\0data\x1ftrue\n"
+    audio="${audio_opt[on]}"
+    audio_rec=true
+else
+    echo -en "\0urgent\x1f3\n"
+    echo -en "\0data\x1ffalse\n"
+    audio="${audio_opt[off]}"
+    audio_rec=false
+fi
 
-pgrep rofi > /dev/null && pkill rofi
+echo -en "\0prompt\x1f$state\n"
+echo -en "\0keep-selection\x1ftrue\n"
+options="$screen\n$area\n$window\n$audio\n"
 
-CHOSEN="$(echo -e $OPTIONS | $ROFI_COMMAND $STATUS -dmenu -l 4 -selected-row 1)"
+if [[ -z $pid ]]; then
+    case "$1" in
+        "$screen")
+            start() {
+                output=$(swaymsg -t get_outputs | jq -r \
+                    '.[] | select(.focused).name')
+                start_recording --output="$output"
+            }
 
-if ! pgrep wf-recorder > /dev/null; then
-    case "$CHOSEN" in
-        "$SCREEN")
-            OUTPUT=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused).name')
-            startRecording --output="$OUTPUT"
+            # stop rofi listen to script
+            start > /dev/null &
         ;;
-        "$AREA")
-            GEOM=$($SLURP_CMD)
-	        
-	        if [ -z "$GEOM" ]; then
-		        exit 0
-	        fi
+        "$area")
+            start() {
+                geom=$(slurp_cmd)
 
-            startRecording --geometry="$GEOM"
+                [[ -z "$geom" ]] && exit 0
+
+                start_recording --geometry="$geom"
+            }
+
+            start > /dev/null &
         ;;
-        "$WINDOW")
-            GEOM=$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | $SLURP_CMD)
-	        
-            if [ -z "$GEOM" ]; then
-		        exit 0
-	        fi
+        "$window")
+            start() {
 
-            startRecording --geometry="$GEOM"
+                geom=$(swaymsg -t get_tree | jq -r \
+                    '.. | select(.pid? and .visible?) | .rect | 
+                    "\(.x),\(.y) \(.width)x\(.height)"' | slurp_cmd)
+
+                [[ -z "$geom" ]] && exit 0
+
+                start_recording --geometry="$geom"
+            }
+
+            start > /dev/null &
+        ;;
+        *)
+            echo -en "$options"
         ;;
     esac
 else
-    if [[ -n "$CHOSEN" ]] && [[ "$CHOSEN" != "$STATE" ]]; then
-        stopRecording
+    if [[ -z "$1" ]]; then
+        echo -en "$options"
+    else 
+        stop_recording
     fi
 fi
