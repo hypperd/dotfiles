@@ -5,7 +5,13 @@ function error() {
 }
 
 function kill_swaybg() {
-    pidof -q swaybg && pkill swaybg
+    pid_new="$1"
+    sleep 1.2s
+    for pid in $(pidof swaybg); do
+      if [[ "$pid" != "$pid_new" ]]; then
+        kill "$pid"
+      fi
+    done
 }
 
 config="${XDG_CONFIG_HOME:-$HOME/.config}/wallpaper.json"
@@ -33,8 +39,8 @@ case "$cmd" in
 
         path="$(realpath "$path")"
 
-        kill_swaybg
         swaybg -o '*' -m fill -i "$path" &
+        kill_swaybg "$!"
         output=$(jq --arg path "$path" '.path = $path' "$config")
         
         echo -E "$output" > "$config"
