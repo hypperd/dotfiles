@@ -1,14 +1,29 @@
-export PATH=${PATH}:$HOME/.local/bin
-export PYTHONPATH=$HOME/.local/share/lib/python
+# XDG dirs
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_CACHE_HOME=$HOME/.cache
+
+NPM_PACKAGES=$XDG_DATA_HOME/lib/node_modules
+
+export PATH=${PATH}:$HOME/.local/bin:$NPM_PACKAGES/bin
+export PYTHONPATH=$XDG_DATA_HOME/lib/python
+#export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
+
+export JDK_JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME"
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc 
 
 unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
   	export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
+export NEOVIDE_MULTIGRID=true
+
 if [ -z $DISPLAY ] && [ "$TTY" = "/dev/tty1" ]; then
   	export _JAVA_AWT_WM_NONREPARENTING=1
-	export MOZ_ENABLE_WAYLAND=1
-	export QT_QPA_PLATFORMTHEME=qt5ct
-  	exec sway > $HOME/.local/share/sway/sway.log 2>&1
+	  export MOZ_ENABLE_WAYLAND=1
+	  export QT_QPA_PLATFORMTHEME=qt5ct
+    export XDG_CURRENT_DESKTOP=sway
+    exec sway > $HOME/.local/share/sway/sway.log 2>&1
 fi
