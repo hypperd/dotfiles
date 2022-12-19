@@ -1,0 +1,93 @@
+configuration {
+    show-icons: false;
+    disable-history: false;
+    sidebar-mode: false;
+}
+
+@import "colors"
+
+window {
+    transparency: "real";
+    location: east;
+    anchor: east;
+    border-radius: 8px;
+    width: 64px;
+    x-offset: -6px;
+    border: 2px;
+    border-color: @background-light;
+    background-color: @background;
+}
+
+mainbox {
+    background-color: inherit;
+    spacing: 5px;
+    margin: 5px;
+    children: [ inputbar, listview ];
+    background-color: inherit;
+}
+
+listview {
+    lines: 5;
+    spacing: 5px;
+    cycle: true;
+    dynamic: true;
+    layout: vertical;
+    background-color: inherit;
+}
+
+inputbar {
+    enabled: true;
+    spacing: 0px;
+    children: [ prompt, entry ];
+    background-color: inherit;
+    enabled: true;
+}
+
+entry {
+    enabled: false;
+}
+
+prompt {
+    font: "feather 15";
+    color: @background;
+    background-color: @background-light;
+    padding: 10px 15px 10px 15px;
+    horizontal-align: 0.6;
+    vertical-align: 0.5;
+    border-radius: 8px;
+}
+
+element {
+    background-color: @background-light;
+    text-color: @foreground;
+    orientation: vertical;
+    border-radius: 8px;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    font: "feather 15";
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    padding: 10px 4px 10px 4px;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color: @urgent;
+    text-color: @background;
+}
+
+element normal.active,
+element alternate.active {
+    background-color: @active;
+    text-color: @background;
+}
+
+element selected.normal,
+element selected.urgent,
+element selected.active {
+    background-color: @accent;
+    text-color: @background;
+}

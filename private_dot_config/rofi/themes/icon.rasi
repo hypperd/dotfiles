@@ -1,0 +1,60 @@
+configuration {
+    show-icons: false;
+    disable-history: true;
+    sidebar-mode: false;
+}
+
+@import "colors"
+
+window {
+    transparency: "real";
+    border-radius: 7px;
+    location: east;
+    anchor: east;
+    x-offset: -6px;
+    border: 2px;
+    width: 184px;
+    border-color: @background-light;
+    background-color: @background;
+}
+
+mainbox {
+    background-color: inherit;
+    children: [ inputbar, listview];
+}
+
+listview {
+    margin: 5px;
+    spacing: 5px;
+    cycle: true;
+    dynamic: true;
+    layout: vertical;
+    background-color: inherit;
+}
+
+inputbar {
+    enabled: false;
+}
+
+element {
+    background-color: inherit;
+    orientation: vertical;
+    border-radius: 8px;
+    children: [ element-icon];
+}
+
+element-icon {
+    expand: true;
+    background-color: transparent;
+    vertical-align: 0.5;
+    horizontal-align: 0.5;
+    size: 150px;
+}
+
+element selected {
+    background-color: @accent;
+}
+
+element-text {
+    enabled: false;
+}

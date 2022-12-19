@@ -14,21 +14,22 @@ function notify() {
     notify-send -t 3000 -a wf-recorder "$@"
 }
 
-function notifyOk() {
+function notify_ok() {
     title=${1:-"Recording"}
 	message=${2:-"OK"}
     notify -i cs-screen -u low "$title" "$message"
 }
 
-function notifyError() {
+function notify_error() {
     title=${1:-"Recording Error"}
 	message=${2:-"Error"}
 	notify -u critical "$title" "$message"
 }
 
-function waybar-icon() {
+function waybar_icon() {
     if [[ ! -f $lock_file ]]; then
-        touch $lock_file
+        jq --null-input --arg filename "${file##*/}" \
+          '.filename = $filename' > "$lock_file"
     else
         rm $lock_file
     fi
@@ -46,19 +47,17 @@ function start_recording() {
         params+=(--audio="$(pactl get-default-sink).monitor")
     
     wf-recorder "${params[@]}" || \
-        notifyError "Error on capturing screen" "Error in wf-recorder" &
-    notifyOk "Recording Started" "${file##*/}"
-    waybar-icon
+        notify_error "Error on capturing screen" "Error in wf-recorder" &
+    notify_ok "Recording Started" "${file##*/}"
+    waybar_icon
 }
 
 function stop_recording() {
-    pkill -SIGINT wf-recorder || notifyError "Unable to stop wf-recorder" \
+    pkill -SIGINT wf-recorder || notify_error "Unable to stop wf-recorder" \
         "Error on capturing screen"
     
-    # shellcheck disable=SC2012
-    notifyOk "Recording Complete" \
-        "$(ls "$file_path" -Art | tail -1)"
-    waybar-icon
+    notify_ok "Recording Complete" "$(jq -r '.filename' "$lock_file")"
+    waybar_icon
 }
 
 function slurp_cmd() {
@@ -83,7 +82,7 @@ else
     state="${state_opt[off]}"
 fi
 
-if [[ $ROFI_DATA == false || $info = *"audio"* ]]; then
+if [[ $ROFI_DATA == "false" ]] || [[ $info = *"audio"* ]]; then
     echo -en "\0active\x1f3\n"
     echo -en "\0data\x1ftrue\n"
     audio="${audio_opt[on]}"
@@ -95,6 +94,7 @@ else
     audio_rec=false
 fi
 
+echo -en "\0theme\x1flistview {lines: 4;}\n"
 echo -en "\0prompt\x1f$state\n"
 echo -en "\0keep-selection\x1ftrue\n"
 options="$screen\n$area\n$window\n$audio\n"
