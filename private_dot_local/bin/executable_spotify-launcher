@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ $1 =~ (track|playlist|album|artist|show|episode)\/([^\?]+) ]] && pidof -q spotify; then
+    url="spotify:${BASH_REMATCH[1]}:${BASH_REMATCH[2]}"
+    dbus-send --type=method_call \
+      --dest=org.mpris.MediaPlayer2.spotify \
+      /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.OpenUri string:"$url"
+else
+    exec spotify --uri="$1" --use-gl=egl
+fi
+

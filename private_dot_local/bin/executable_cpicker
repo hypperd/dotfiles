@@ -1,0 +1,26 @@
+#!/bin/bash
+# Based from https://github.com/sdushantha/farge
+
+set -eo pipefail
+
+function slurp_cmd() {
+    slurp -b 00000000 -p
+}
+
+function get_hex_value() {
+    grim -g "$1" -t ppm - |
+      convert - -format '#%[hex:p{0,0}]' info:-
+}
+
+geom=$(slurp_cmd)
+
+if [[ -n $geom ]]; then
+  hex_color=$(get_hex_value "$geom")
+  temp_file="$(mktemp)"
+  
+  convert -size 100x100 xc:"$hex_color" png:"$temp_file"
+
+  wl-copy <<< "$hex_color"
+  notify-send "Color Picker:" "$hex_color" --icon="$temp_file"
+  rm "$temp_file"
+fi

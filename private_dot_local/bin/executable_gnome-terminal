@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Fix gtk file managers not open terminal applications
+# in preferred terminal. Is a bug in glib:
+# https://gitlab.gnome.org/GNOME/glib/-/issues/338
+# Terminal emulators is hardcoded in glib code:
+# https://gitlab.gnome.org/GNOME/glib/-/blob/2.68.0/gio/gdesktopappinfo.c#L2549
+# 
+
+kitty -e "$2" "$3"
