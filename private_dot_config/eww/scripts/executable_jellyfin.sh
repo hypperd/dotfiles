@@ -24,7 +24,7 @@ case "$1" in
         stop
     ;;
     "toggle")
-        if pgrep -f '/jellyfin/jellyfin' > /dev/null; then
+        if pidof '/jellyfin/jellyfin'; then
             stop
         else
             start

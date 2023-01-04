@@ -6,7 +6,11 @@
 }
 
 .startmenu-profile  {
-    margin-top: 8px;
+    background-color: $nord1;
+    border-radius: 8px;
+    padding: 8px;
+
+
     .profile-image {
         background-size: cover;
         border-radius: 100%;
@@ -15,25 +19,36 @@
     }
 
     .profile-username {
-        margin-top: 8px;
         font-family: "Roboto";
         font-size: 18px;
         font-style: italic;
         font-weight: bold;
     }
+
+    .uptime {
+      font-family: "Roboto";
+      font-size: 14px;
+    }
 }
 
 .system-info {
-    font-family: "Material Icons", Roboto;
+    background-color: $nord1;
+    border-radius: 8px;
+    font-family: 'Symbols Nerd Font';
     font-size: 21px;
-    margin-left: 8px;
-    margin-right: 8px;
+    padding: 8px;
+    // margin-left: 8px;
+    // margin-right: 8px;
     
     scale trough {
-        background-color: $nord1;
+        background-color: $nord2;
         border-radius: 10px;
         min-height: 14px;
         margin: 1rem 0rem;
+    }
+
+    highlight {
+        border-radius: 10px;
     }
 
     .brightness-bar {
@@ -43,27 +58,26 @@
 
         .brightness-slider trough highlight {
             background-image: linear-gradient(to right, $nord12, $nord13);
-            border-radius: 10px;
         }
     }
     
-    .mic-bar {
-        .mic-icon {
-            color: $nord10;
+    .temp-bar {
+        .temp-icon {
+            color: $nord15;
         }
-        .mic-slider trough highlight {
-            background-image: linear-gradient(to right, $nord10, $nord9);
-            border-radius: 10px;
+
+        .temp-slider trough highlight {
+            background-image: linear-gradient(to right, $nord15, $nord11);
         }
     }
     
-    .volume-bar {
-        .volume-icon {
+    .disk-bar {
+        .disk-icon {
             color: $nord8;
         }
-        .volume-slider trough highlight {
+
+        .disk-slider trough highlight {
             background-image: linear-gradient(to right, $nord8, $nord7);
-            border-radius: 10px;
         }
     }
     
@@ -71,9 +85,9 @@
         .ram-icon {
             color: $nord14;
         }
+
         .ram-slider trough highlight {
-            background-color:  $nord14;
-            border-radius: 10px;
+            background-image:  linear-gradient(to right, $nord14, $nord7);
         }
     }
 }
@@ -134,7 +148,10 @@
 }
 
 .system-btn {
-    font-family: "Material Icons", feather;
+    font-family: 'Symbols Nerd Font';
+    background-color: $nord1;
+    border-radius: 8px;
+    padding: 8px;
     button {
         padding: 6px 0px;
         font-size: 20px;
@@ -147,7 +164,7 @@
 }
 
 .system-btn-off {
-    background-color: $nord1;
+    background-color: $nord2;
 }
 
 .system-btn-on {

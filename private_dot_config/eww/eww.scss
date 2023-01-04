@@ -15,9 +15,12 @@ $nord11: #bf616a;
 $nord12: #d08770;
 $nord13: #ebcb8b;
 $nord14: #a3be8c;
+$nord15: #b48ead;
 
 window {
     color: $foreground;
+    border-radius: 8px;
+    
 }
 
 tooltip {

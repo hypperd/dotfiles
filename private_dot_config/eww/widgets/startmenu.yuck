@@ -1,103 +1,125 @@
 ;; profile variables
 (defpoll profile_image :interval "10h" "echo \"$HOME/.face\"")
 (defpoll profile_name :interval "10h" "whoami")
+(defpoll uptime :interval "30s" "uptime -p")
 
 ;; system info variables
-(deflisten mic "scripts/system-info.sh mic")
-(deflisten volume "scripts/volume.py")
-(deflisten brightness "scripts/system-info.sh brightness")
-(defpoll memory :interval "2s" "free | awk 'NR==2 {print $3 / $2 * 100}'")
+(defvar disk "/")
+(deflisten brightness :initial "100" "scripts/system-info.sh brightness")
 
 ;; player variables
 (defvar poll_position true)
 (defpoll music_position :run-while {poll_position} :interval "1s" 
     "scripts/system-info.sh music-position"
 )
-(deflisten player_json 
-    :initial '{"title": "", "artist": "", "duration": "", "art": "", "status": ""}'
-    "scripts/mediaplayer.py --player spotify"
-)
+(deflisten player_json :initial "{}" "scripts/mediaplayer.py spotify")
+
 ;; system buttons
-(defvar dunst_paused false)
+(defpoll dunst_paused :initial false :interval "10h" "dunstctl is-paused")
+(defpoll night_light :initial false :interval "10h" "scripts/system-info.sh night-light")
 (defvar idle_inhibitor false)
-(defvar night_light true)
 (defvar server false)
 
 (defwidget startmenu[]
     (box :class "startmenu-window" :space-evenly true :orientation "h"
         (box :class "startmenu-box" :space-evenly false :orientation "v" :spacing 8
-            (box :orientation "v" :class "startmenu-profile" :space-evenly false
+            
+            (box :orientation "h" :class "startmenu-profile" :space-evenly false :spacing 12
                 (box
-                    :halign "center"
+                    :halign "start"
                     :space-evenly false
                     :class "profile-image"
                     :style "background-image: url('${profile_image}')"
-                    :width 140
-                    :height 140
+                    :width 100
+                    :height 100
                 )
-                (label
-                    :class "profile-username"
-                    :text profile_name
-                )
-            )
-            (box :class "system-info" :orientation "v" :space-evenly false
-                (box :spacing 8 :class "mic-bar" :orientation "h" :space-evenly false
-                    (label :class "mic-icon" :text "mic")
-                    (scale
-                        :class "mic-slider"
-                        :onchange "pactl set-source-volume @DEFAULT_SOURCE@ {}%"
-                        :value {mic}
-                        :hexpand true
-                    ) 
-                )
-                (box :class "volume-bar" :orientation "h" :space-evenly false :spacing 8
-                    (label :class "volume-icon" :text "volume_up")
-                    (scale
-                        :class "volume-slider"
-                        :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%"
-                        :round-digits 2
-                        :value {volume}
-                        :hexpand true
+                (box
+                    :orientation "v"
+                    :valign "center"
+                    (label
+                        :halign "start"
+                        :class "profile-username"
+                        :text {profile_name}
+                    )
+                    (label
+                        :halign "start"
+                        :class "uptime"
+                        :text {uptime}
                     )
                 )
+            )
+
+            (box :class "system-info" :orientation "v" :space-evenly false
                 (box :class "brightness-bar" :orientation "h" :space-evenly false :spacing 8
-                    (label :class "brightness-icon" :text "brightness_high")
+                    (label :class "brightness-icon slider-icon" :text "")
                     (scale
                         :class "brightness-slider"
                         :onchange "brightnessctl -q set {}%"
+                        :max 101
                         :value {brightness}
                         :hexpand true
                     )   
                 )
                 (box :class "ram-bar" :orientation "h" :space-evenly false :spacing 8
-                    (label :class "ram-icon" :text "memory")
+                    (label :class "ram-icon slider-icon" :text "")
                     (scale
                         :active false
                         :class "ram-slider"
                         :hexpand true
-                        :value {memory}
+                        :value {EWW_RAM.used_mem_perc}
+                        :tooltip "Used: ${round((EWW_RAM.used_mem / 1048576), 0)} MiB"
+                    )
+                )
+                (box :class "disk-bar" :orientation "h" :space-evenly false :spacing 8
+                    (eventbox
+                        :onclick "eww update disk=${
+                            disk == "/" ? "/media/hypper/Arquivos" : "/"
+                        }"
+                        (label 
+                            :tooltip {EWW_DISK[disk].name}
+                            :class "disk-icon slider-icon" :text ""
+                        )
+                    )
+                    (scale
+                        :active false
+                        :class "disk-slider"
+                        :value {EWW_DISK[disk].used_perc}
+                        :tooltip "free space in ${EWW_DISK[disk].name}: ${round((EWW_DISK[disk].free / 1048576 / 1024), 2)} GiB"
+                        :hexpand true
+                    )
+                )
+
+                (box :class "temp-bar" :orientation "h" :space-evenly false :spacing 8
+                    (label :class "temp-icon slider-icon" :text "")
+                    (scale
+                        :active false
+                        :class "temp-slider"
+                        :value {EWW_TEMPS.CORETEMP_PACKAGE_ID_0}
+                        :tooltip "Temp: ${EWW_TEMPS.CORETEMP_PACKAGE_ID_0} C°"
+                        :hexpand true
                     )
                 )
             )
+
             (box :class "music-player" :orientation "h" :space-evenly false :vexpand true
                 (box
                     :space-evenly false
                     :class "song-art" 
                     :orientation "v" 
                     :hexpand true
-                    :style "background-image: url('${player_json.art == "" ? 'assets/music_fallback.png' : '${player_json.art}'}')"
+                    :style "background-image: url('${player_json.art == "null" ? 'assets/music_fallback.png' : '${player_json.art}'}')"
                     (box :class "music-info" :orientation "v" :space-evenly false :vexpand true
                         (label :class "now-playing" :halign "start" :text "Now Playing:")
                         (label 
                             :class "song-title" 
                             :halign "start"
-                            :text {player_json.title == "" ? "Nothing" : player_json.title}
+                            :text {player_json.title == "null" ? "Nothing" : player_json.title}
                             :limit-width 23
                         )
                         (label
                             :halign "start"
                             :class "song-artist"
-                            :text {player_json.artist == "" ? "by Unknown Artist" : "by ${player_json.artist}"}
+                            :text {player_json.artist == "null" ? "by Unknown Artist" : "by ${player_json.artist}"}
                             :limit-width 35
                         )
                         (label 
@@ -105,7 +127,7 @@
                             :halign "start"
                             :valign "end"
                             :vexpand true
-                            :text { player_json.duration == "" ? "--:-- / --:--" : "${music_position}/${player_json.duration}"}
+                            :text {player_json.duration == "null" ? "--:-- / --:--" : "${music_position}/${player_json.duration}"}
                         )
                     )
                 )
@@ -119,28 +141,28 @@
                     (button :onclick "playerctl next --player spotify" "")
                 )
             )
+
             (box :spacing 8 :class "system-btn" :orientation "h"
                 (button
                     :onclick "scripts/dunst.sh"
                     :class {dunst_paused ? "system-btn-off" : "system-btn-on"}
-                    {dunst_paused ? "notifications_off" : "notifications_active"}
+                    {dunst_paused ? "" : ""}
                 )
                 (button
                     :class {server ? "system-btn-on" : "system-btn-off"}
                     :onclick "scripts/jellyfin.sh toggle &"
-                    "storage"
+                    ""
                 )
                 (button
                     :onclick "scripts/night-light.sh"
                     :class {night_light ? "system-btn-on" : "system-btn-off"}
                     ""
-                    ;; ｜ 
                 )
                 (button
                     :class {idle_inhibitor ? "system-btn-on" : "system-btn-off"}
                     :onclick "scripts/idle-inhibitor.sh toggle"
                     :tooltip "Idle Inhibitor"
-                    {idle_inhibitor ? "flash_on" : "flash_off"}
+                    ""
                 )
             )
         )
@@ -149,13 +171,13 @@
 
 (defwindow startmenu
 	:geometry
-		(geometry
-			:x "6px"
+        (geometry
+            :x "6px"
             :y "6px"
-			:width "370px" 
-			:height "571px"
-			:anchor "left bottom"
-		)
-	:stacking "fg"
-	(startmenu)      
+            :width "370px" 
+            :height "545px"
+            :anchor "left bottom"
+        )
+    :stacking "fg"
+	(startmenu)
 )
