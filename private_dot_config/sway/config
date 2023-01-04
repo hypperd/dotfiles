@@ -1,52 +1,37 @@
-## Sway config
-## Read 'man 5 sway' for a complete reference.
+# Sway config Read 'man 5 sway' for a complete reference.
+# vi: ft=ps1
+
+## GENERAL
 
 include /etc/sway/config.d/*
-
-##-- Fonts (Global) ----------------------
-
+xwayland force
 font pango: 'JetBrains Mono SemiBold 10'
-title_align center
 
-##-- Variables ---------------------------
+## VARIABLES
 
 set $mod Mod4
 set $term kitty
-set $bin ~/.bin
+set $bin ~/.config/sway/scripts
 
-##-- Output Config ----------------------
+## OUTPUT CONFIG
 
-output LVDS-1 {
-	scale 1
-}
+exec wallpaper restore
+exec xrandr --output XWAYLAND0 --primary
+exec kanshi
+exec_always kanshictl reload
 
-#exec_always 'pkill kanshi; exec kanshi'
-
-# -- Wallpaper --
-
-exec ~/.azotebg
-
-##-- Idle Config -------------------------
-
-exec swayidle -w \
-	    timeout 360 'swaylock' \
-        timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-        timeout 840 'systemctl suspend' \
-        before-sleep 'pkill rofi ; swaylock' \
-        after-resume 'swaymsg "output * dpms on"' \
-        lock 'pkill rofi ; swaylock'
-
-exec 'pkill sway-audio-idle; exec sway-audio-idle-inhibit'
-
-##-- Input Config ------------------------
+## INPUT CONFIG
 
 input {
-	"type:touchpad" {
+	  "type:touchpad" {
         dwt enabled
         tap enabled
-	    natural_scroll enabled
-    	middle_emulation enabled
+        dwtp enabled
+	      natural_scroll enabled
         scroll_method two_finger
+    }
+    "type:pointer" {
+      accel_profile flat
     }
     "type:keyboard" {
         xkb_layout br
@@ -59,9 +44,28 @@ input {
     }
 }
 
-##-- Workspaces ---------------------
+## IDLE CONFIG
 
-# Switch to workspace
+exec swayidle -w \
+	  timeout 300 'swaylock' \
+    timeout 900 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+    timeout 1800 'systemctl suspend' \
+    before-sleep 'swaylock' \
+    after-resume 'swaymsg "output * power on"' \
+    lock 'swaylock'
+
+exec 'exec sway-audio-idle-inhibit > /dev/null'
+
+## WINDOW CONFIG
+
+gaps inner 6
+gaps outer 2
+default_border pixel 2
+title_align center
+default_floating_border pixel 2
+
+## WORKSPACES
+
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
 bindsym $mod+3 workspace number 3
@@ -73,7 +77,6 @@ bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
-# Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2
 bindsym $mod+Shift+3 move container to workspace number 3
@@ -85,81 +88,58 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
-# Switch to workspace with arrow keys
 bindsym $mod+Control+Right workspace next_on_output
 bindsym $mod+Control+Left workspace prev_on_output
-
-#Move workspace to another monitor
 bindsym $mod+Control+Shift+Right move workspace to output right
 bindsym $mod+Control+Shift+Left move workspace to output left
 
-##-- Key Bindings ------------------------
+bindgesture swipe:right workspace next_on_output
+bindgesture swipe:left workspace prev_on_output
 
-# -- Basics --
+bindsym Alt+Tab workspace back_and_forth
 
-# Open terminal
+## KEY BINDINGS
+
 bindsym $mod+Return exec $term
-
-# close focused window
 bindsym --no-repeat $mod+Shift+q kill
-
-# Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod normal
-
-# Reload sway
 bindsym $mod+Shift+c reload
 
-# -- Moving around --
-    
-# Move your focus around
+## MOVING AROUND
+
+focus_follows_mouse no
+
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# Move focus between monitors
 bindsym $mod+Alt+Left focus output left
 bindsym $mod+Alt+Right focus output Right
 
-# disable focus with mouse
-focus_follows_mouse no
-
-# Move the focused window
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# -- Layout stuff --
+## LAYOUT STUFF
 
-# split
 bindsym $mod+b splith
 bindsym $mod+v splitv
 
-# Switch the current container between different layout styles
 bindsym $mod+Shift+semicolon layout toggle split tabbed stacking
 
-# Make the current focus fullscreen
 bindsym $mod+f fullscreen
-
-# Toggle the current focus between tiling and floating mode
 bindsym $mod+Shift+space floating toggle
-
-# Swap focus between the tiling area and the floating area
 bindsym $mod+space focus mode_toggle
-
-# Move focus to the parent container
 bindsym $mod+a focus parent
 
-# -- Scratchpad --
+## SCRATCHPAD
     
-# Move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Tab scratchpad show
 
-# Show the next scratchpad window or hide the focused scratchpad window.
-bindsym Alt+Tab scratchpad show
-
-# -- Function keys --
+## FUNCTION KEYS
 
 # Volume control
 bindsym --locked XF86AudioRaiseVolume exec pamixer -i 2
@@ -174,8 +154,8 @@ bindsym --locked XF86AudioNext exec playerctl --player=spotify next
 bindsym --locked XF86AudioPrev exec playerctl --player=spotify previous
 
 # Brightness control
-bindsym --locked XF86MonBrightnessUp exec brightnessctl set +5% 
-bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl -q set +5% 
+bindsym --locked XF86MonBrightnessDown exec brightnessctl -q set 5%-
 
 # Custom player control (Laptop keyboard)
 bindsym --locked XF86Explorer exec playerctl --player=spotify next
@@ -184,33 +164,30 @@ bindsym --locked XF86Search exec playerctl --player=spotify previous
 bindsym --locked XF86Tools exec playerctl stop
 
 # Dpms toggle laptop screen
-bindsym --no-repeat XF86Display output LVDS-1 dpms toggle
+bindsym --no-repeat XF86Display output LVDS-1 power toggle
 
-# -- Screenshots --
+# Screenshots
+bindsym --no-repeat Print exec grimshot --notify copy-save output
+bindsym --no-repeat $mod+Shift+s exec grimshot --notify copy area
+bindsym --no-repeat $mod+Shift+w exec grimshot --notify copy window
 
-bindsym --no-repeat Print exec $bin/grimshot --notify copy-save output
-bindsym --no-repeat $mod+Shift+s exec $bin/grimshot --notify copy area
-bindsym --no-repeat $mod+Shift+w exec $bin/grimshot --notify copy window
+## MISC KEY BINDINGS
 
-# -- Rofi --
+set $rofi "$HOME/.config/rofi/rofi.sh"
 
-set $rofi "~/.config/rofi/scripts"
-
-bindsym $mod+Shift+e exec $rofi/powermenu.sh
-bindsym $mod+g exec $rofi/recorder.sh
-bindsym $mod+d exec $rofi/launcher.sh
+bindsym $mod+Shift+e exec $rofi powermenu
+bindsym $mod+g exec $rofi recorder
+bindsym $mod+d exec $rofi launcher
+bindsym $mod+x exec $rofi wallpaper
 bindsym $mod+period exec rofi -show emoji 
 
-# -- Misc --
-
-bindsym $mod+l exec loginctl lock-session
-
-# -- Apps --
-
+bindsym $mod+l exec swaylock
 bindsym $mod+e exec thunar
 bindsym $mod+s exec eww-launcher startmenu
 
-##-- Resize / Move -----------------------
+bindsym $mod+Shift+p exec cpicker
+
+## RESIZE / MOVE MODES
 
 mode "Resize" {
 
@@ -240,20 +217,11 @@ mode "Move" {
 
 bindsym $mod+m mode "Move"
 
-##-- Window borders/Gaps -----------------
+## THEME SETTINGS
 
-gaps inner 6
-gaps outer 2
-default_border pixel 2
-default_floating_border pixel 2
+seat seat0 xcursor_theme "Bibata-Modern-Ice" 22
 
-##-- Theme Settings ----------------------
-
-seat seat0 xcursor_theme "Breeze_Snow" 16
-#exec_always $bin/theme.sh
-exec xrdb -merge ~/.Xresources
-
-# -- Window Colors --                                              
+## WINDOW COLORS
 
 # class                     border      backgr.     text        indicator   child_border
 client.focused              '#81a1c1'   '#81a1c1'   '#eceff4'   '#8fbcbb'   '#81a1c1'
@@ -261,32 +229,40 @@ client.unfocused            '#4c566a'   '#4c566a'   '#d8dee9'   '#4c566a'   '#4c
 client.urgent               '#ebcb8b'   '#ebcb8b'   '#eceff4'   '#ebcb8b'   '#ebcb8b'
 client.focused_inactive     '#4c566a'   '#4c566a'   '#d8dee9'   '#4c566a'   '#4c566a'
 
-##-- Status Bar --------------------------
+## STATUS BAR
 
 bar {
     swaybar_command waybar
-
 }
 
-##-- Autostart ---------------------------
+## AUTOSTART
 
 exec $bin/autostart.sh
 
-##-- Window Rules ------------------------
+## WINDOW RULES
 
-for_window [app_id="galculator"] floating enable
-for_window [app_id="blueman-*"] floating enable
-for_window [app_id="pavucontrol"] floating enable
-for_window [class="Lxappearance"] floating enable
-for_window [app_id="nemo"] floating enable
-for_window [app_id="nemo" title="Home"] floating disable
-for_window [class="Spotify"] move container to workspace 9
-for_window [app_id="imv"] border pixel 2
-for_window [app_id="system-config-printer"] floating enable
+for_window {
+    [app_id="galculator"] floating enable
+    [app_id="blueman-*"] floating enable
+    [app_id="pavucontrol"] floating enable
+    [class="Lxappearance"] floating enable
+    [app_id="imv"] border pixel 2
+    [app_id="system-config-printer"] floating enable
+    [class="Spotify"] opacity 0.96
+    [app_id="thunar" title="File Operation Progress"] floating enable
+    [app_id="org.qbittorrent.qBittorrent"] floating enable
+    [app_id="org.qbittorrent.qBittorrent" title="qBittorrent.*"] floating disable
+    [app_id="piper"] floating enable
+}
 
+for_window [title="(?:Open|Save|[S-s]elect) (?:File|Folder|As|[F-f]iles)"] floating enable
 
-for_window [title="Save File"] floating enable
-for_window [title="Select Font"] floating enable
-
-# -- Intellij --
+# Intellij
 for_window [class="jetbrains-idea" title="splash"] floating enable
+for_window [class="jetbrains-idea" title="Welcome to IntelliJ IDEA"] floating enable
+
+## WORKSPACES ASSIGN
+
+assign {
+    [class="Spotify"] workspace 9
+}
