@@ -77,7 +77,7 @@ def on_metadata(player):
 def main():
     status = MediaMonitor(on_metadata, write_output)
 
-    if status.args.player not in status.manager.props.player_names:
+    if status.args.player.name not in status.manager.props.player_names:
         update_eww(False)
         write_output()
 
