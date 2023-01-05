@@ -3,7 +3,6 @@
     "position": "bottom",
     "height": 34,
     "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media", "custom/recorder"],
-    //Change "sway/window" to "wlr/taskbar" for more windows like taskbar 
     "modules-center": ["sway/window"],
     "modules-right": ["custom/pacman" ,"custom/scratchpad-indicator","pulseaudio", "cpu", "battery", "tray", "clock"],
 
@@ -38,12 +37,12 @@
     },
 
     "tray": {
-        "spacing": 10
+        "spacing": 8
     },
 
     "clock": {
         "format": "{:%H:%M} ",
-        "tooltip-format": "{:%d/%m/%Y} ",
+        "tooltip": false,
         "on-click": "eww-launcher calendar"
     },
 
@@ -80,7 +79,6 @@
     "custom/media": {
         "tooltip": true,
         "format": "{icon} {}",
-        "tooltip-format": "{}",
         "return-type": "json",
         "max-length": 25,
         "format-icons": {
@@ -88,27 +86,19 @@
             "default": "🎜"
         },
         "escape": true,
-        "exec": "$HOME/.config/waybar/scripts/mediaplayer.py --player spotify 2> /dev/null",
+        "exec": "exec $HOME/.config/waybar/scripts/mediaplayer.py spotify 2> /dev/null",
         "on-click": "playerctl --player=spotify play-pause"
     },
-
-    //    Taskbar icons like Windows      
-    /*"wlr/taskbar": {
-        "format": " {icon} ",
-        "icon-size": 13,
-        "icon-theme": "Papirus-Dark",
-        "tooltip-format": "{title}",
-        "on-click": "activate",
-        "ignore-list": [
-            "Spotify"
-        ],
-        "app_ids-mapping": {
-            "jetbrains-idea-ce": "intellij"
-        }
-    },*/
+    
+    "custom/scratchpad-indicator": {
+        "format": "缾 {}",
+        "return-type": "json",
+        "escape": true,
+        "exec": "exec $HOME/.config/waybar/scripts/scratchpad.py 2> /dev/null"
+    },
 
     "custom/start": {
-        "format": "",
+        "format": "<span size='128%'></span>",
         "tooltip": false,
         "on-click": "eww-launcher startmenu"
     },
@@ -121,23 +111,13 @@
 		"signal": 8
 	},
 
-    "custom/scratchpad-indicator": {
-        "format": "缾 {}",
-        "return-type": "json",
-        "escape": true,
-        // "interval": 3,
-        "exec": "$HOME/.config/waybar/scripts/scratchpad.py 2> /dev/null"
-        // "exec-if": "exit 0",
-        // "on-click": "swaymsg 'scratchpad show'",
-        // "on-click-right": "swaymsg 'move scratchpad'"
-    },
-
     "custom/pacman": {
         "format": " {}",
-        "interval": 3600,                     // every hour
-        "exec": "$HOME/.config/waybar/scripts/updates.sh 2> /dev/null",       // # of updates
-        "exec-if": "exit 0",                  // always run; consider advanced run conditions
-        "on-click": "pkill -SIGRTMIN+6 waybar", // update system
+        "interval": "once",
+        "exec": "cat $HOME/.local/state/waybar/updates",
+        "on-click": "systemctl --user start updates.service",
         "signal": 6
     }
 }
+
+// vi: ft=jsonc

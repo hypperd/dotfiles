@@ -1,30 +1,30 @@
 * {
-  	font-family: 'JetBrains Mono Nerd Font', monospace;
-  	font-weight: normal;
-  	font-size: 13px;
+    font-family: 'JetBrains Mono Nerd Font', monospace;
+    font-weight: normal;
+    font-size: 13px;
 }
 
 *:not(check):not(separator):not(menu):not(menuitem):not(arrow) {
-	min-height: unset;
-	/*border: none;*/
+    min-height: unset;
+    /*border: none;*/
 }
 
 #tray menu * {
-	font-family: 'JetBrains Mono';
-	font-size: 10pt;
+    font-family: 'JetBrains Mono';
+    font-size: 10pt;
 }
 
 window#waybar {
-  	border-radius: 0px;
-	background-color: #2e3440;
-	border-bottom: 3px solid #3b4252;
-	color: #d8dee9;
-	transition-property: background-color;
-	transition-duration: .5s;
+    border-radius: 0px;
+    background-color: #2e3440;
+    border-bottom: 3px solid #3b4252;
+    color: #d8dee9;
+    transition-property: background-color;
+    transition-duration: .5s;
 }
 
 window#waybar.hidden {
-  	opacity: 0.2;
+    opacity: 0.2;
 }
 
 #custom-start,
@@ -39,79 +39,80 @@ window#waybar.hidden {
 #custom-scratchpad-indicator,
 #custom-pacman,
 #tray {
-	padding: 0px 10px;
-	background-color: #3b4252 ;
-	margin: 2px 1px 5px 1px;
-	border: 3px solid rgba(0, 0, 0, 0);
-	border-radius: 8px;
-	background-clip: padding-box;
+    padding: 0px 10px;
+    background-color: #3b4252;
+    margin: 2px 1px 5px 1px;
+    border: 3px solid rgba(0, 0, 0, 0);
+    border-radius: 8px;
+    background-clip: padding-box;
+    color: #d8dee9;
 }
 
 #custom-start {
-	padding: 0px 18px 0px 14px;
-	margin-left: 2px;
-	font-size: 16px;
-	color: #2e3440;
-	background-color: #81a1c1;
+    padding: 0px 19px 0px 14px;
+    margin-left: 2px;
+    /* font-size: 16px; */
+    color: #2e3440;
+    background-color: #81a1c1;
 }
 
 #workspaces button,
 #workspaces button.hover,
 #workspaces button.focus {
-  	border-radius: 0px;
+    border-radius: 0px;
 }
 
 #workspaces button {
-	padding: 0 3px;
-	min-width: 20px;
-	color: #5e81ac;
+    padding: 0 3px;
+    min-width: 20px;
+    color: #5e81ac;
 }
 
 #workspaces button:hover {
-  	background-color: #434c5e;
+    background-color: #434c5e;
 }
 
 #workspaces button.focused {
-  	color: #2e3440;
-  	background-color: #5e81ac;
+    color: #2e3440;
+    background-color: #5e81ac;
 }
 
 #workspaces button.urgent {
-  	color: #2e3440;
-	background-color: #bf616a;
+    color: #2e3440;
+    background-color: #bf616a;
 }
 
 #cpu {
-  	color: #81a1c1;
+    color: #81a1c1;
 }
 
 #custom-media {
-	background-color: #8fbcbb;
-	color: #2e3440;
+    background-color: #8fbcbb;
+    color: #2e3440;
 }
 
 #clock {
-	margin-right: 2px;
-	color: #2e3440;
-	background-color: #81a1c1;
+    margin-right: 2px;
+    color: #2e3440;
+    background-color: #81a1c1;
 }
 
 #pulseaudio {
-	background-color: #b48ead;
-	color: #2e3440;
+    background-color: #b48ead;
+    color: #2e3440;
 }
 
 #pulseaudio.muted {
-	padding: 0px 12px 0px 10px;
-	background-color: #bf616a;
-	color: #2e3440;
+    padding: 0px 12px 0px 10px;
+    background-color: #bf616a;
+    color: #2e3440;
 }
 
 #battery,
-#battery.charging, 
+#battery.charging,
 #battery.plugged {
-	background-color: #a3be8c;
-	color: #2e3440;
+    background-color: #a3be8c;
+    color: #2e3440;
 }
 
 @keyframes blink {
@@ -122,18 +123,18 @@ window#waybar.hidden {
 }
 
 #battery.warning:not(.charging) {
-	background-color: #ebcb8b;
-	color: #2e3440;
+    background-color: #ebcb8b;
+    color: #2e3440;
 }
 
 #battery.critical:not(.charging) {
-	background-color: #bf616a;
-	color: #2e3440;
-	animation-name: blink;
-	animation-duration: 0.5s;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
+    background-color: #bf616a;
+    color: #2e3440;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
 /* Style for taskbar
@@ -152,31 +153,32 @@ window#waybar.hidden {
 */
 
 #custom-recorder {
-  	color: #bf616a;
-  	background-color: transparent;
-  	padding: 0px;
+    color: #bf616a;
+    background-color: transparent;
+    padding: 0px;
 }
 
 #custom-scratchpad-indicator {
-	color: #81a1c1;
-	font-weight: 500;
-	padding: 0px 2px;
-	background-color: transparent;
+    color: #81a1c1;
+    font-weight: 500;
+    padding: 0px 2px;
+    background-color: transparent;
 }
 
-#cpu, #workspaces button {
-	font-weight: 500;
+#cpu,
+#workspaces button {
+    font-weight: 500;
 }
 
 #custom-pacman {
-	color: #bf616a;
-	padding: 0px 2px;
-	background-color: transparent;
-	font-weight: 500;
+    color: #bf616a;
+    padding: 0px 2px;
+    background-color: transparent;
+    font-weight: 500;
 }
 
 #window {
-	font-family: monofur;
-	font-size: 16px;
-	font-weight: bold;
+    font-family: monofur;
+    font-size: 16px;
+    font-weight: bold;
 }
