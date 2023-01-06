@@ -7,7 +7,6 @@ import urllib.request
 
 from media_monitor import MediaMonitor
 
-
 def time_convert(microseconds: int) -> str:
     seconds = round(microseconds / 1000000)
     return '{:02}:{:02}'.format(seconds // 60, seconds % 60)
@@ -76,8 +75,9 @@ def on_metadata(player):
 
 def main():
     status = MediaMonitor(on_metadata, write_output)
+    player_names = [player.name for player in status.manager.props.player_names]
 
-    if status.args.player.name not in status.manager.props.player_names:
+    if status.args.player not in player_names:
         update_eww(False)
         write_output()
 
