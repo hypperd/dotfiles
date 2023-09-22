@@ -1,0 +1,84 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "type": "kitty",
+    "source": "~/.face",
+    "padding": {
+      "right": 2
+    },
+    "width": 32
+  },
+  "display": {
+    "separator": "   "
+  },
+  "modules": [
+    "title",
+    {
+      "type": "separator",
+      "string": "━"
+    },
+    {
+      "type": "os",
+      "key": "󰍲"
+    },
+    {
+      "type": "host",
+      "key": "󰌢",
+      "format": "{3}"
+    },
+    {
+      "type": "kernel",
+      "key": ""
+    },
+    {
+      "type": "uptime",
+      "key": "",
+      "format": "{?1}{1}d {?}{?2}{2}h {?}{3}m"
+    },
+    {
+      "type": "packages",
+      "key": "󰏔"
+    },
+    {
+      "type": "shell",
+      "key": ""
+    },
+    {
+      "type": "display",
+      "key": "",
+      "compactType": "original"
+    },
+    {
+      "type": "wm",
+      "key": ""
+    },
+    // {
+    //   "type": "gpu",
+    //   "key": "󰆦",
+    //   "forceVulkan": true,
+    //   "format": "{2}"
+    // },
+    {
+      "type": "cpu",
+      "key": "󰇺",
+      "format": "{1}"
+    },
+    {
+      "type": "memory",
+      "key": "",
+      "format": "{1} / {2}"
+    },
+    {
+      "type": "custom",
+      "format": " "
+    },
+    {
+      "type": "custom",
+      "format": "\u001b[40;30m███\u001b[41;31m███\u001b[42;32m███\u001b[43;33m███\u001b[44;34m███\u001b[45;35m███\u001b[46;36m███\u001b[47;37m███"
+    },
+    {
+      "type": "custom",
+      "format": " "
+    }
+  ]
+}
