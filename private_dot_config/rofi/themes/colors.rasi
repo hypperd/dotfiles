@@ -1,4 +1,6 @@
+// vi: ft=rasi
 * {
+  background-dark: #242933;
   accent: #81a1c1;
   background: #2E3440;
   background-light: #3b4252;

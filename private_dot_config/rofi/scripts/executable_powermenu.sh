@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 shutdown=""
 reboot=""
@@ -6,7 +6,7 @@ lock=""
 suspend=""
 logout=""
 
-options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
+options="$shutdown\n$reboot\n$lock\n$suspend\n$logout\n"
 
 if [[ -z $1 ]]; then
   echo -en $options

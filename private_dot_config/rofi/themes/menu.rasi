@@ -1,7 +1,10 @@
+// vi: ft=rasi
 configuration {
     show-icons: false;
     disable-history: false;
     sidebar-mode: false;
+    kb-row-down: "j,Down";
+    kb-row-up: "k,Up";
 }
 
 @import "colors"
@@ -38,7 +41,7 @@ listview {
 inputbar {
     enabled: true;
     spacing: 0px;
-    children: [ prompt, entry ];
+    children: [ prompt ];
     background-color: inherit;
     enabled: true;
 }

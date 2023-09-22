@@ -1,5 +1,6 @@
 // Modification by hypper
 // Original Source: https://github.com/gh0stzk/dotfiles
+// vi: ft=rasi
 
 configuration {
     show-icons: true;
@@ -7,6 +8,9 @@ configuration {
     display-drun: "";
     display-window: "";
 	  sidebar-mode: false;
+    drun {
+      fallback-icon: "applications-other";
+    }
 }
 
 * {
@@ -24,7 +28,8 @@ window {
     width: 546px;
     border-color: @background-light;
     border: 2px;
-    background-color: @background;
+    border-radius: 8px;
+    background-color: #12141980;
 }
 
 mainbox {
@@ -38,17 +43,16 @@ mainbox {
 listbox {
     spacing: 8px;
     padding: 6px;
-    background-color: transparent;
+    background-color: @background;
     orientation: vertical;
     children: [ message, listview ];
 }
 
 inputbar {
     enabled: true;
-    spacing: 10px;
-    padding: 35px 20px;
+    spacing: 8px;
+    padding: 30px 20px;
     background-color: transparent;
-    background-image: url("../assets/background.png", width);
     text-color: @foreground;
     orientation: horizontal;
     children: [ textbox-prompt-colon, entry, mode-switcher ];
@@ -60,11 +64,16 @@ mode-switcher {
   expand: false;
 }
 
+button,
+textbox-prompt-colon,
+entry {
+  background-color: @background;
+}
+
 button {
     font: "Symbols Nerd Font 11";
     padding: 12px 16px;
     border-radius: 8px;
-    background-color: @background-alt;
     text-color: @foreground;
     horizontal-align: 0.5;
     vertical-align: 0.5;
@@ -82,18 +91,17 @@ textbox-prompt-colon {
     str: "";
     padding: 12px 16px;
     border-radius: 8px;
-    background-color: @background-alt;
     text-color: inherit;
     vertical-align: 0.5;
     horizontal-align: 0.5;
 }
 
 entry {
+    vertical-align: 0.5;
     enabled: true;
     expand: true;
     padding: 12px 16px;
     border-radius: 8px;
-    background-color: @background-alt;
     text-color: inherit;
     placeholder: "Search Apps";
     placeholder-color: inherit;
