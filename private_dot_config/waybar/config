@@ -1,123 +1,143 @@
-{
-    "layer": "top",
-    "position": "bottom",
-    "height": 34,
-    "modules-left": ["custom/start","sway/workspaces", "sway/mode", "custom/media", "custom/recorder"],
-    "modules-center": ["sway/window"],
-    "modules-right": ["custom/pacman" ,"custom/scratchpad-indicator","pulseaudio", "cpu", "battery", "tray", "clock"],
-
-    "sway/window": {
-        "format": "{app_id}",
-        "max-length": 50,
-        "icon": false
-    },
-
-    "sway/workspaces": {
-         "disable-scroll": true,
-         "all-outputs": true,
-         "format": "{icon}",
-         "format-icons": {
-            "1": "1",
-            "2": "2",
-            "3": "3",
-            "4": "4",
-            "5": "5",
-            "6": "6",
-            "7": "7",
-            "8": "8",
-            "9": "9",
-            "urgent": "",
-            "focused": "",
-            "default": ""
-        }
-    },
-
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
-    },
-
-    "tray": {
-        "spacing": 8
-    },
-
-    "clock": {
-        "format": "{:%H:%M} ",
-        "tooltip": false,
-        "on-click": "eww-launcher calendar"
-    },
-
-    "cpu": {
-        "interval": 2,
-        "format": "{usage}% ",
-        "tooltip": false
-    },
-
-    "battery": {
-        "interval": 5,
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{capacity}% {icon}",
-        "format-charging": "{capacity}% ",
-        "format-plugged": "{capacity}% ",
-        "format-icons": ["", "", "", "", ""]
-    },
-
-    "pulseaudio": {
-        "format": "{volume}% {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "",
-        "format-source-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
-    },
-
-    "custom/media": {
-        "tooltip": true,
-        "format": "{icon} {}",
-        "return-type": "json",
-        "max-length": 25,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "exec $HOME/.config/waybar/scripts/mediaplayer.py spotify 2> /dev/null",
-        "on-click": "playerctl --player=spotify play-pause"
-    },
-    
-    "custom/scratchpad-indicator": {
-        "format": "缾 {}",
-        "return-type": "json",
-        "escape": true,
-        "exec": "exec $HOME/.config/waybar/scripts/scratchpad.py 2> /dev/null"
-    },
-
-    "custom/start": {
-        "format": "<span size='128%'></span>",
-        "tooltip": false,
-        "on-click": "eww-launcher startmenu"
-    },
-
-    "custom/recorder": {
-		"format": "{}",
-		"interval": "once",
-		"tooltip": false,
-        "exec": "$HOME/.config/waybar/scripts/recorder-icon.sh",
-		"signal": 8
-	},
-
-    "custom/pacman": {
-        "format": " {}",
-        "interval": "once",
-        "exec": "cat $HOME/.local/state/waybar/updates",
-        "on-click": "systemctl --user start updates.service",
-        "signal": 6
-    }
-}
-
 // vi: ft=jsonc
+{
+  "layer": "top",
+  "position": "bottom",
+  "margin-left": 6,
+  "margin-bottom": 6,
+  "margin-right": 6,
+  "height": 36,
+  "modules-left": [
+    "custom/start",
+    "sway/workspaces",
+    "sway/mode",
+    "custom/media",
+    "custom/pacman",
+    "custom/recorder"
+  ],
+  "modules-center": [
+    "sway/window"
+  ],
+  "modules-right": [
+    "custom/scratchpad-indicator",
+    "pulseaudio",
+    "memory",
+    "cpu",
+    "battery",
+    "tray",
+    "clock"
+  ],
+  "sway/window": {
+    "format": "{app_id}",
+    "max-length": 50,
+    "icon": false
+  },
+  "sway/workspaces": {
+    "disable-scroll": true,
+    "all-outputs": true,
+    "format": "{icon}",
+    "format-icons": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "󱒃"
+    }
+  },
+  "sway/mode": {
+    "format": "<span style=\"italic\">{}</span>"
+  },
+  "tray": {
+    "spacing": 8
+  },
+  "clock": {
+    "format": " {:%H:%M}",
+    "tooltip": false,
+    "on-click": "exec pywsctl toggle calendar"
+  },
+  "cpu": {
+    "interval": 2,
+    "format": " {usage}%",
+    "tooltip": false
+  },
+  "memory": {
+    "interval": 2,
+    "format": " {used:0.1f}G"
+  },
+  "battery": {
+    "interval": 5,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": "{capacity}% 󰂅",
+    "format-plugged": " {capacity}%",
+    "format-icons": [
+      "󰂎",
+      "󰁻",
+      "󰁾",
+      "󰂀",
+      "󰁹"
+    ]
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon} {format_source}",
+    "format-muted": "󰟎 {format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "󰋋",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "on-click": "pavucontrol"
+  },
+  // custom modules
+  "custom/media": {
+    "tooltip": true,
+    "format": "{icon} {}",
+    "return-type": "json",
+    "max-length": 26,
+    "format-icons": {
+      "spotify": "",
+      "default": "🎜"
+    },
+    "escape": true,
+    "exec": "exec $XDG_CONFIG_HOME/waybar/scripts/mediaplayer.py spotify",
+    "on-click": "playerctl --player=spotify play-pause"
+  },
+  "custom/scratchpad-indicator": {
+    "format": "󰖲 {}",
+    "return-type": "json",
+    "escape": true,
+    "exec": "exec $HOME/.config/waybar/scripts/scratchpad.py 2> /dev/null"
+  },
+  "custom/start": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "exec $HOME/.config/rofi/rofi.sh launcher"
+  },
+  "custom/recorder": {
+    "format": "{}",
+    "interval": "once",
+    "tooltip": false,
+    "exec": "exec $HOME/.config/waybar/scripts/recorder-icon.sh",
+    "signal": 8
+  },
+  "custom/pacman": {
+    "format": " {}",
+    "interval": "once",
+    "return-type": "json",
+    "exec": "cat $HOME/.local/state/waybar/updates",
+    "on-click": "systemctl --user start updates.service",
+    "signal": 6
+  }
+}
