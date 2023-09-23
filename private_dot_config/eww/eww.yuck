@@ -1,4 +1,0 @@
-;; Calendar Window
-(include "./widgets/calendar.yuck")
-;; Startmenu Window
-(include "./widgets/startmenu.yuck")
