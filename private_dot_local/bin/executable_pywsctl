@@ -1,0 +1,27 @@
+#!/usr/bin/bash
+
+dbus_name="org.pyws.server"
+dbus_path="/org/pyws/server"
+dbus_ifac="org.pyws.server"
+
+method_call() {
+	dbus-send  --print-reply=literal --dest="${dbus_name}" "${dbus_path}" "$@"
+}
+
+case "$1" in
+  "toggle") 
+		method_call "${dbus_ifac}.ToggleWindow" "string:$2" 
+  ;;
+  "close")
+		method_call "${dbus_ifac}.CloseWindow" "string:$2" 
+  ;;
+  "open")
+		method_call "${dbus_ifac}.OpenWindow" "string:$2" 
+  ;;
+  "inspector")
+		method_call "${dbus_ifac}.Inspector"
+  ;;
+  *)
+    echo "pywsctl: unrecognized command '$1'" 1>&2
+  ;;
+esac

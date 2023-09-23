@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+import argparse
+from pyws.server import init_server
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        prog="pyws", description="A simple wayland widget system")
+    parser.parse_args()
+
+    init_server()
+
+
+if __name__ == "__main__":
+    main()
