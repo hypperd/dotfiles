@@ -1,0 +1,43 @@
+#calendar {
+  font-family: "JetBrains Mono";
+  border: 2px solid #3b4252;
+  border-radius: inherit;
+  padding: 8px;
+}
+
+#calendar calendar {
+  font-style: normal;
+  font-weight: 800;
+}
+
+#calendar calendar:active {
+  color: #ebcb8b;
+}
+
+#calendar calendar:selected {
+  border-radius: 5px;
+  color: #2e3440;
+  background-color: #81a1c1;
+  font-weight: 900;
+}
+
+#calendar calendar.header {
+  font-weight: bold;
+}
+
+#calendar calendar.button {
+  color: #81a1c1;
+}
+
+#calendar calendar.highlight {
+  color: #a3be8c;
+  font-weight: bold;
+}
+
+#calendar calendar:indeterminate {
+  color: #4c566a;
+}
+
+#calendar calendar:hover {
+  background-color: #3b4252;
+}

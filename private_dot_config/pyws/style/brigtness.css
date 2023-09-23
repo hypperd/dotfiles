@@ -1,0 +1,32 @@
+#brigtness {
+  padding: 2px;
+  border-radius: inherit;
+  background-color: #2e3440;
+  border: 2px solid #3b4252;
+}
+
+#brigtness trough {
+  min-width: 32px;
+  background-color: #3b4252;
+  border-radius: 6px;
+}
+
+#brigtness trough block {
+  border-radius: 6px;
+}
+
+#brigtness trough block.filled {
+  background-color: #81a1c1;
+}
+
+#brigtness trough block.filled.full {
+  background-color: #a3be8c;
+}
+
+#brigtness #icon {
+  color: #3b4252;
+}
+
+#brigtness #icon.low {
+  color: #4c566a;
+}

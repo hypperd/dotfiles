@@ -1,0 +1,11 @@
+* {
+  all: unset;
+}
+
+window {
+  background-color: alpha(#2e3440, 0.96);
+  border-radius: 8px;
+}
+
+@import "./style/calendar.css";
+@import "./style/brigtness.css";
