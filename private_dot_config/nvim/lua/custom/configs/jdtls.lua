@@ -43,8 +43,7 @@ local config = {
   capabilities = require("plugins.configs.lspconfig").capabilities,
   on_attach = function(client, bufnr)
     require("plugins.configs.lspconfig").on_attach(client, bufnr)
-    jdtls.setup.add_commands()
-    jdtls.setup_dap { hotcodereplace = "auto" }
+    jdtls.setup_dap()
     require("jdtls.dap").setup_dap_main_class_configs()
   end,
   init_options = {

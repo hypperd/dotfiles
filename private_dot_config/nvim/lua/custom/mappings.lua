@@ -5,6 +5,13 @@ M.general = {
   n = {
     ["gx"] = { '<Cmd>call jobstart(["xdg-open", expand("<cfile>")], {"detach": v:true})<CR>', "" },
     ["<Esc>"] = { "<cmd> noh <CR>", "no highlight" },
+    ["<leader>wd"] = { "<cmd> TroubleToggle workspace_diagnostics <CR>", "workspace diagnostics" },
+    ["<leader>fm"] = {
+      function()
+        require("conform").format({ async = true, lsp_fallback = true })
+      end,
+      "LSP formatting",
+    },
   },
   t = {
     ["<Esc>"] = { "<C-\\><C-n>", "normal mode" },
@@ -17,9 +24,10 @@ M.lspconfig = {
       function()
         vim.lsp.buf.code_action { context = { only = { "source.organizeImports" } }, apply = true }
       end,
-      "lsp organize imports",
+      "LSP organize imports",
     },
-    ["<leader>wd"] = { "<cmd> TroubleToggle workspace_diagnostics <CR>", "workspace diagnostics" },
+    ["gr"] = { "<cmd> TroubleToggle lsp_references <CR>", "LSP references" },
+    ["gd"] = { "<cmd> TroubleToggle lsp_definitions <CR>", "LSP references" },
   },
 }
 
@@ -63,7 +71,7 @@ M.telescope = {
     ["<leader>ff"] = {
       function()
         if require("zk.util").notebook_root(vim.fn.getcwd()) ~= nil then
-          require("zk.commands").get "ZkNotes"()
+          require("zk.commands").get "ZkNotes" ()
         else
           vim.cmd [[Telescope find_files]]
         end
@@ -155,8 +163,8 @@ M.nvterm = {
 
 M.zen = {
   n = {
-    ["<leader>zm"] = {"<cmd> ZenMode <Cr>", "Zen mode"}
-  }
+    ["<leader>zm"] = { "<cmd> ZenMode <Cr>", "Zen mode" },
+  },
 }
 
 M.disabled = {

@@ -2,25 +2,49 @@ local overrides = require "custom.configs.overrides"
 local markdown = require "custom.configs.markdown"
 
 local M = {
-  -- oerrde plugin configs
-  { "nvim-telescope/telescope.nvim", opts = overrides.telescope },
-  { "nvim-treesitter/nvim-treesitter", opts = overrides.treesitter },
-  { "williamboman/mason.nvim", opts = overrides.mason },
-  { "nvim-tree/nvim-tree.lua", opts = overrides.nvimtree },
+  -- override plugin configuration
+  { "nvim-telescope/telescope.nvim",       opts = overrides.telescope },
+  { "williamboman/mason.nvim",             opts = overrides.mason },
   { "lukas-reineke/indent-blankline.nvim", opts = overrides.blankline() },
-  { "NvChad/nvim-colorizer.lua", opts = overrides.nvim_colorizer },
-  { "hrsh7th/nvim-cmp", opts = overrides.nvim_cmp },
-  { "L3MON4D3/LuaSnip", config = overrides.luasnip() },
+  { "NvChad/nvim-colorizer.lua",           opts = overrides.nvim_colorizer },
+  { "hrsh7th/nvim-cmp",                    opts = overrides.nvim_cmp },
+  { "L3MON4D3/LuaSnip",                    config = overrides.luasnip() },
   {
-    "NvChad/ui",
-    branch = "v2.0",
-    lazy = false,
+    "nvim-treesitter/nvim-treesitter",
+    ft = { "man" },
+    opts = overrides.treesitter,
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    opts = overrides.nvimtree,
+    dependencies = {
+      {
+        "antosha417/nvim-lsp-file-operations",
+        opts = {},
+      },
+    },
+  },
+
+  -- ui
+  {
+    "stevearc/stickybuf.nvim",
+    event = { "VeryLazy" },
+    opts = {
+      get_auto_pin = function (bufnr)
+        return require("stickybuf").should_auto_pin(bufnr)
+      end
+    },
+  },
+  {
+    "stevearc/dressing.nvim",
+    event = { "VeryLazy" },
     config = function()
-      -- vim.api.nvim_del_user_command("Nvdash")
+      require "custom.configs.dressing"
     end,
   },
 
   -- eager loading
+  { "famiu/bufdelete.nvim", lazy = false },
   {
     "goolord/alpha-nvim",
     lazy = false,
@@ -29,14 +53,24 @@ local M = {
     end,
   },
   {
-    "stevearc/dressing.nvim",
+    "rcarriga/nvim-notify",
     lazy = false,
     config = function()
-      require "custom.configs.dressing"
+      dofile(vim.g.base46_cache .. "notify")
+
+      notify = require "notify"
+
+      notify.setup {
+        fps = 0,
+        max_width = 60,
+        max_height = 250,
+        render = "wrapped-compact",
+        stages = "static",
+      }
+
+      vim.notify = notify
     end,
   },
-  { "elkowar/yuck.vim", lazy = false },
-  { "famiu/bufdelete.nvim", lazy = false },
 
   -- lsp stuff
   {
@@ -53,25 +87,15 @@ local M = {
         config = function()
           require "custom.configs.jdtls"
         end,
-        dependencies = {
-          "tobias-z/java-util.nvim",
-          config = function()
-            require("java_util").setup {}
-          end,
+      },
+      {
+        "stevearc/conform.nvim",
+        opts = {
+          formatters_by_ft = {
+            lua = { "stylelua" },
+            sh = { "shfmt" },
+          }
         },
-      },
-      {
-        "akinsho/flutter-tools.nvim",
-        config = function()
-          require("core.utils").load_mappings "flutter"
-          require "custom.configs.flutter"
-        end,
-      },
-      {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-          require "custom.configs.null-ls"
-        end,
       },
     },
     config = function()
@@ -115,6 +139,7 @@ local M = {
     "folke/trouble.nvim",
     cmd = { "Trouble", "TroubleToggle" },
     config = function()
+      dofile(vim.g.base46_cache .. "trouble")
       require "custom.configs.trouble"
     end,
   },
@@ -127,7 +152,7 @@ local M = {
   },
 
   -- disable plugins
-  { "NvChad/nvterm", enabled = false },
+  { "NvChad/nvterm",        enabled = false },
 
   -- markdown/note taking
   {
@@ -147,7 +172,7 @@ local M = {
     dependencies = {},
     config = function()
       require("peek").setup {
-        app = {"firefox", "--new-window"},
+        app = { "firefox", "--new-window" },
       }
     end,
   },
@@ -156,10 +181,6 @@ local M = {
     config = function()
       require "custom.configs.zk-nvim"
     end,
-  },
-  {
-    "ThePrimeagen/vim-be-good",
-    lazy = false,
   },
 }
 

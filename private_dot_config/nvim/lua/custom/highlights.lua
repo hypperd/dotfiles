@@ -4,6 +4,9 @@ M.override = {
   Comment = {
     italic = true,
   },
+  St_gitIcons = {
+    fg = "light_grey",
+  },
 }
 
 M.add = {

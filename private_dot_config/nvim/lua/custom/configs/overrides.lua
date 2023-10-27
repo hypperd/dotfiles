@@ -27,13 +27,13 @@ M.treesitter = {
     "json",
     "jsonc",
     "yaml",
+    "xml",
     "dockerfile",
     "ini",
     "javascript",
     "typescript",
     "css",
     "html",
-    "dart",
     "rasi",
   },
 }
@@ -52,14 +52,16 @@ M.mason = {
     "yaml-language-server",
     "marksman",
 
-    -- linters
-    "shellcheck",
-    "stylua",
-    "cspell",
-
     -- debug
     "java-test",
     "java-debug-adapter",
+
+    -- linters
+    "shellcheck",
+
+    -- formatters
+    "stylua",
+    "shfmt",
   },
 }
 
@@ -77,6 +79,7 @@ M.telescope = {
 M.blankline = function()
   local config = require("plugins.configs.others").blankline
   table.insert(config.filetype_exclude, "alpha")
+  table.insert(config.filetype_exclude, "man")
   return config
 end
 

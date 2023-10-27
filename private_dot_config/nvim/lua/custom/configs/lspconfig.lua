@@ -9,7 +9,8 @@ local servers = {
   "tsserver",-- bun?
   "jsonls",-- bun?
   "marksman",
-  "pylsp",
+  -- "pylsp",
+  "jedi_language_server",
   "rust_analyzer",
   "clangd",
   "bashls" -- bun?
