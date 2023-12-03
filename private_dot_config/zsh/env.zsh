@@ -9,6 +9,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'      # Begins underline.
 
 # Preferred editor
 export EDITOR='nvim'
+export MANPAGER='nvim +Man!'
 
 # FZF theme
 export FZF_DEFAULT_OPTS="
@@ -27,6 +28,7 @@ export FZF_DEFAULT_OPTS="
   --color info:#b48ead
   --color header:#81a1c1
   --border rounded
+  --color separator:#4c566a
   --pointer ' >'
   --prompt '>> '
   --exact"

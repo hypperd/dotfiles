@@ -27,18 +27,25 @@ setopt HIST_VERIFY               # Do not execute immediately upon history expan
 setopt HIST_BEEP                 # Beep when accessing non-existent history.
 
 # The file to save the history in.
-HISTFILE="$HOME/.zsh_history"
+# HISTFILE="$HOME/.zsh_history"
 
-#The maximum number of events stored
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+
+# The maximum number of events stored
 HISTSIZE=50000 # -> in memory
 SAVEHIST=50000 # -> in filesystem
 
+# Directory options
+setopt AUTO_CD              # Auto changes to a directory without typing cd.
+setopt AUTO_PUSHD           # Push the old directory onto the stack on cd.
+setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+
 # Default ls color theme.
-(( $+commands[dircolors] )) && eval "$(dircolors -b)"
+(( $+commands[dircolors] )) && export "$(dircolors -b)"
 
 # set terminal title
 if [[ "$TERM" != (dumb|linux|*bsd*|eterm*) ]]; then
-    # Based in kitty shell integration
-    functions[_ksi_precmd]+="builtin print -rnu $_ksi_fd \$'\\e]2;'\"\${(%):-%n@%m:%(3~|…/%2~|%~)}\"\$'\\a'"
+    # From kitty shell integration
+    functions[_ksi_precmd]+="builtin print -rnu $_ksi_fd \$'\\e]2;'\"\${(%):-%(4~|…/%3~|%~)}\"\$'\\a'"
     functions[_ksi_preexec]+="builtin print -rnu $_ksi_fd \$'\\e]2;'\"\${(V)1}\"\$'\\a'"
 fi
