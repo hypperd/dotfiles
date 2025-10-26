@@ -1,0 +1,138 @@
+.encore-dark-theme,
+.encore-dark-theme .encore-base-set {
+  --text-bright-accent: var(--spice-bright-accent) !important;
+  --decorative-subdued: rgba(var(--spice-rgb-selected-row), .1) !important;
+}
+
+.encore-dark-theme .encore-bright-accent-set {
+  --background-highlight: var(--spice-bright-accent) !important;
+  --background-press: var(--spice-bright-accent-darker) !important;
+  --background-elevated-base: var(--spice-bright-accent) !important;
+  --background-elevated-highlight: var(--spice-bright-accent) !important;
+  --background-elevated-press: var(--spice-bright-accent-darker) !important;
+}
+
+.Root__now-playing-bar {
+  margin: unset !important;
+  background-color: var(--background-base) !important;
+  padding: unset !important;
+  border-radius: 8px !important;
+}
+
+.Root__globalNav {
+  margin: unset !important;
+  background-color: var(--background-base) !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
+}
+
+.Root__right-sidebar aside {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.main-home-homeHeader,
+.main-entityHeader-overlay,
+.main-entityHeader-backgroundColor,
+.main-actionBarBackground-background,
+.main-nowPlayingView-contextItemInfo:before,
+.playlist-playlist-actionBarBackground-background {
+  background: transparent !important;
+}
+
+.main-topBar-background,
+.main-home-filterChipsSection {
+  background: var(--background-highlight) !important;
+}
+
+.main-topBar-overlay,
+.main-home-filterChipsSection::after {
+  background: transparent !important;
+}
+
+.main-trackList-rowMarker {
+  &:has(.main-trackList-rowImagePlayButton[aria-label="Pause"]) svg {
+    fill: var(--text-bright-accent) !important;
+  }
+
+  & img {
+    display: none !important;
+  }
+
+  & .main-trackList-rowImagePlayButton[aria-label="Pause"] {
+    opacity: 1 !important;
+  }
+}
+
+.main-cardImage-imageWrapper {
+  border-radius: 8px !important;
+
+  & img {
+    border-radius: 8px !important;
+  }
+}
+
+.search-searchCategory-contentArea {
+
+  &::after {
+    background: linear-gradient(-90deg, var(--background-base) 0, transparent 100%) !important;
+  }
+
+  &::before {
+    background: linear-gradient(90deg, var(--background-base) 0, transparent 100%) !important;
+  }
+}
+
+.encore-internal-color-text-subdued {
+  color: inherit !important;
+}
+
+/* verifiedBadge  */
+.main-entityHeader-headerText svg {
+  fill: var(--spice-bright-accent) !important;
+  background-image: linear-gradient(var(--spice-main), var(--spice-main)) !important;
+}
+
+.view-homeShortcutsGrid-main img {
+  display: none !important;
+}
+
+/* remove shadows */
+.main-entityHeader-shadow,
+.main-cardImage-imageWrapper {
+  box-shadow: unset !important;
+}
+
+/* fix big search top result */
+.main-shelf-shelf[aria-label="Top result"] .main-cardImage-imageWrapper {
+    padding-bottom: 92px !important;
+    width: 92px !important;
+}
+
+/* this will in new version =) */
+
+/* fix artist img background */
+.ZLQMyiECjwh0Fat0ymny {
+  background: linear-gradient(45deg, rgba(var(--spice-rgb-shadow), 0.6), transparent 100%) !important;
+}
+
+/* mixed playlist button color */
+.QWZy9S4FVyOkuP5bKXAw {
+  background: linear-gradient(425deg, var(--spice-button-active) 36.61%, var(--spice-bright-accent)) !important;
+}
+
+.eb4Lwk9tcBKdp6CT1OVK {
+  background: conic-gradient(from 215deg at 50% 50%, rgba(26, 148, 59, 0) -.49deg, var(--spice-bright-accent) 145.44deg, #b5cba3 180.28deg, var(--spice-bright-accent) 214.52deg, rgba(26, 148, 59, 0) 359.51deg, var(--spice-bright-accent) 505.44deg) !important;
+}
+
+.Bynal0bUgglpxFrQXWSQ {
+  background: conic-gradient(from 200deg at 50% 50%, #bfd1ae 0deg, var(--spice-bright-accent) 90deg, var(--spice-bright-accent-darker) 186.64deg, var(--spice-bright-accent) 269.7deg, #bfd1ae 1turn) !important;
+}
+
+.zL8gArCdSyiaDk4QC_pf {
+  background: linear-gradient(155deg, rgba(2, 134, 49, .04), rgba(var(--spice-rgb-bright-accent-darker), .4)) !important;
+}
+
+.PLiYSFZGYt3isLCjGqErZ {
+  background: linear-gradient(155deg, rgba(2, 134, 49, .024), rgba(var(--spice-rgb-bright-accent-darker), .24));
+}
