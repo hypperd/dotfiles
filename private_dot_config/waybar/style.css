@@ -2,41 +2,28 @@
  */
 @import "colors.css";
 
-* {
-  font-family: 'JetBrains Mono Nerd Font', monospace;
+window:not(.popup)#waybar {
+  border-radius: 8px;
+  background-color: alpha(@base00, 0.94);
+  color: @base06;
+  font-family: 'JetBrainsMono NF', monospace;
   font-weight: normal;
   font-size: 13px;
-}
-
-/* not mess up with tray menus */
-:not(check):not(separator):not(menu):not(menuitem):not(arrow):not(.popup) {
   min-height: 0;
 }
 
-/* restore tray menu style */
-window.popup * {
-  font-family: system-ui;
-  font-size: 10pt;
-}
-
-window#waybar {
-  border-radius: 8px;
-  background-color: alpha(@base00, 0.96);
-  color: @base06;
-}
-
+/* boxed modules */
 #custom-start,
-#custom-notification,
 #workspaces,
 #mode,
-#custom-media,
-#clock,
+#mpris,
+#custom-backlight,
+#power-profiles-daemon,
 #pulseaudio,
-#battery,
-#cpu,
-#memory,
-#tray {
-  padding: 0px 10px;
+#system-info,
+#tray,
+#clock-notification {
+  padding: 0px 8px;
   background-color: @base01;
   margin: 6px 3px 6px 3px;
   border-radius: 8px;
@@ -44,35 +31,6 @@ window#waybar {
   color: @base06;
 }
 
-#memory {
-  color: @base00;
-  background-color: @base0A;
-  border-top-right-radius: unset;
-  border-bottom-right-radius: unset;
-  margin-right: unset;
-  padding-right: 2px;
-}
-
-#cpu {
-  color: @base00;
-  background-color: @base0A;
-  border-top-left-radius: unset;
-  border-bottom-left-radius: unset;
-  margin-left: unset;
-  padding-left: 2px;
-}
-
-#custom-recorder,
-#custom-scratchpad-indicator,
-#custom-pacman {
-  padding: 0px 2px;
-  background-color: transparent;
-  margin: 0px 3px;
-  background-clip: padding-box;
-  color: @base06;
-}
-
-/* left modules */
 #custom-start {
   margin-left: 6px;
   padding-right: 10px;
@@ -100,8 +58,9 @@ window#waybar {
   box-shadow: inset 0 0 0 100px alpha(@base03, 0.5);
 }
 
-#workspaces button.active,
-#workspaces button.focused {
+#workspaces button:active,
+#workspaces button.focused,
+#workspaces button.visible {
   color: @base00;
   background-color: @base09;
 }
@@ -111,34 +70,39 @@ window#waybar {
   background-color: @base0D;
 }
 
-#workspaces button#sway-workspace-10 label {
-  font-family: 'Symbols Nerd Font';
+#mode {
+  font-weight: 500;
+  background-color: @base08;
+  color: @base00;
 }
 
-#custom-media {
+#mpris {
+  font-family: 'Segoe UI Variable', 'Symbols Nerd Font';
+  font-weight: 500;
   background-color: @base07;
-  color: #2e3440;
+  color: @base00;
 }
 
-#custom-recorder {
-  color: @base0B;
-  font-family: 'Symbols Nerd Font';
+#custom-backlight {
+  color: @base00;
+  background-color: @base0D;
 }
 
-/* center modules */
-#window {
-  font-family: monofur;
-  font-size: 16px;
-  font-weight: bold;
+#power-profiles-daemon {
+  font-family: 'Symbols Nerd Font Mono';
+  color: @base00;
 }
 
-/* modules right*/
-#custom-pacman {
-  color: @base0B;
+#power-profiles-daemon.performance {
+  background-color: @base0D;
 }
 
-#custom-scratchpad-indicator {
-  color: @base09;
+#power-profiles-daemon.power-saver {
+  background-color: @base0E;
+}
+
+#power-profiles-daemon.balanced {
+  background-color: @base07;
 }
 
 #pulseaudio {
@@ -151,37 +115,74 @@ window#waybar {
   color: @base00;
 }
 
-#battery,
-#battery.charging,
-#battery.plugged {
-  background-color: @base0E;
+#system-info {
   color: @base00;
+  background-color: @base0A;
 }
 
-@keyframes blink {
-  to {
-    background-color: #2e3440;
-    color: @base0B;
-  }
+#memory {
+  padding-right: 2px;
 }
 
-#battery.warning:not(.charging) {
-  background-color: @base0D;
-  color: @base00;
-}
-
-#battery.critical:not(.charging) {
-  background-color: @base0B;
-  color: @base00;
-  animation-name: blink;
-  animation-duration: 0.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+#cpu {
+  padding-left: 2px;
 }
 
 #clock {
+  padding-right: 7px;
+}
+
+#custom-notification {
+  font-family: 'Symbols Nerd Font Mono';
+  background-color: @base0E;
+  padding-right: 8px;
+  border-radius: 8px;
+  padding-left: 7px;
+}
+
+#clock-notification {
   color: @base00;
   background-color: @base09;
+  padding-right: 0px;
   margin-right: 6px;
+}
+
+/* unboxed modules */
+#custom-updates,
+#systemd-failed-units,
+#scratchpad,
+#upower {
+  padding: 0px 2px;
+  background-color: transparent;
+  margin: 0px 3px;
+  background-clip: padding-box;
+  color: @base06;
+}
+
+#custom-updates {
+  color: @base0B;
+}
+
+#systemd-failed-units.degraded {
+  color: @base0D;
+}
+
+#scratchpad {
+  color: @base09;
+}
+
+#upower {
+  color: @base0E;
+  padding: 0;
+}
+
+#privacy {
+  margin: 0px 2px;
+  color: @base0B;
+}
+
+#window label {
+  font-family: monofur;
+  font-size: 16px;
+  font-weight: bold;
 }
