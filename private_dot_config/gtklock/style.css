@@ -1,0 +1,60 @@
+window {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-family: 'SegoeUI Variable Display';
+}
+
+grid {
+  padding: 2px;
+}
+
+#window-box,
+#powerbar-box {
+  background-color: alpha(#2e3440, 0.94);
+  border-radius: 8px;
+  border: 2px solid #4c566a;
+}
+
+#clock-label {
+  font-size: 60pt;
+  font-weight: bold;
+}
+
+#unlock-button {
+  color: #2e3440;
+}
+
+#unlock-button:disabled {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#input-field {
+  font-family: monospace;
+}
+
+#window-box {
+  padding: 64px;
+}
+
+#powerbar-box {
+  padding: 6px;
+}
+
+#error-label {
+  color: #bf616a;
+}
+
+#warning-label {
+  color: #ebcb8b;
+}
+
+window#DP-2 label {
+  color: transparent;
+}
+
+window#DP-2 #window-box {
+  border-radius: unset;
+  background-color: transparent;
+  border: unset;
+}
